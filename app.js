@@ -183,9 +183,6 @@ function renderSelect() {
 
 function renderSelectedDetails() {
   const player = getSelected();
-  document.getElementById('selected-avatar').src = player.avatarUrl;
-  setText('selected-name', player.name);
-  setText('selected-meta', `${player.position} - ${player.team}`);
   setText('rating-value', calculatePlayerScore(player));
   setText('rating-meta', `${player.position} // ${player.team}`);
 }
@@ -322,8 +319,8 @@ function drawRadarChart(containerId, data) {
     .attr('transform', `translate(${width / 2},${height / 2})`);
 
   const numRings = data.length;
-  const maxRadius = Math.min(width, height) / 2 - 20;
-  const innerRadius = 40;
+  const maxRadius = Math.min(width, height) / 2 - 14; // keep full size while avoiding clipping
+  const innerRadius = 36;
   const ringWidth = (maxRadius - innerRadius) / numRings;
   const gap = 4;
   const colors = ['#ef4444', '#f97316', '#eab308', '#22d3ee', '#8b5cf6'];
@@ -374,12 +371,12 @@ function drawRadarChart(containerId, data) {
       });
 
     svg.append('text')
-      .attr('x', 5)
-      .attr('y', -(rInner + (ringWidth - gap) / 2))
-      .attr('dy', '0.35em')
+      .attr('x', 3.5)
+      .attr('y', -(rInner + ringWidth * 0.45))
+      .attr('dy', '0.3em')
       .text(d.axis.substring(0, 3).toUpperCase())
       .attr('fill', '#fff')
-      .attr('font-size', '9px')
+      .attr('font-size', '6px')
       .attr('font-weight', 'bold')
       .attr('opacity', 0.8)
       .style('pointer-events', 'none');

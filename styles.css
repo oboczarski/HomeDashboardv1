@@ -2,12 +2,24 @@
   --bg-deep: #0f172a;
 }
 
+html {
+  font-size: clamp(11px, 2.4vw, 15px);
+}
+
 * { box-sizing: border-box; }
 
 body {
   font-family: 'Outfit', system-ui, -apple-system, sans-serif;
   background-color: var(--bg-deep);
   overflow-x: hidden;
+}
+
+.dashboard-root {
+  width: 100vw;
+  max-width: 1400px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding-inline: clamp(8px, 3vw, 20px);
 }
 
 /* Glassmorphism helpers */
@@ -30,6 +42,33 @@ body {
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
 }
 
+#rating-title {
+  font-size: clamp(8px, 1.6vw, 10px);
+  letter-spacing: 0.16em;
+}
+
+#rating-value {
+  font-size: clamp(20px, 5vw, 32px);
+  line-height: 1.05;
+}
+
+#rating-meta {
+  font-size: clamp(7px, 1.5vw, 9px);
+  letter-spacing: 0.16em;
+}
+
+#total-points-value,
+#consistency-value,
+#ceiling-value,
+#share-value {
+  font-size: clamp(16px, 4vw, 23px);
+  line-height: 1.05;
+}
+
+.summary-card h3 { font-size: clamp(12px, 2.9vw, 15px); }
+.summary-card p { font-size: clamp(9px, 2.5vw, 11px); }
+.rating-label { font-size: clamp(8px, 1.6vw, 10px); letter-spacing: 0.16em; }
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); }
@@ -45,3 +84,46 @@ button:focus-visible, select:focus-visible {
 }
 
 #bar-chart, #radar-chart { min-height: 300px; }
+.radar-shell { padding: 16px; min-height: 320px; }
+.radar-center { gap: 2px !important; }
+
+.cards-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: clamp(8px, 2vw, 14px) !important;
+}
+
+.charts-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: clamp(10px, 2.2vw, 16px) !important;
+}
+
+@media (max-width: 1024px) {
+  header { padding: 14px; }
+  main { padding: 14px; }
+  .glass-panel { border-radius: 18px; }
+  .summary-card { padding: 1rem !important; }
+  #bar-chart, #radar-chart { min-height: 260px; }
+  .radar-shell { padding: 14px; }
+}
+
+@media (max-width: 768px) {
+  header { padding: 12px; }
+  main { padding: 12px; }
+  .glass-panel { border-radius: 16px; padding: 0.9rem !important; }
+  h1 { font-size: 1.25rem; }
+  #bar-chart, #radar-chart { min-height: 230px; }
+  table th, table td { padding-left: 0.8rem; padding-right: 0.8rem; }
+  table thead { font-size: 0.72rem; }
+  table tbody { font-size: 0.8rem; }
+}
+
+@media (max-width: 520px) {
+  header { padding: 10px; }
+  main { padding: 10px; }
+  .glass-panel { border-radius: 12px; padding: 0.8rem !important; }
+  .radar-shell { padding: 10px; }
+  #bar-chart, #radar-chart { min-height: 210px; }
+  h1 { font-size: 1.15rem; }
+}
