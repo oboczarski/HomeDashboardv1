@@ -4,66 +4,217 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Fantasy Command Dashboard</title>
-  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Outfit', sans-serif;
-      background-color: #0f172a;
-      overflow-x: hidden; /* Prevent horizontal scroll */
-    }
-    /* Custom Scrollbar */
-    ::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
-    }
-    ::-webkit-scrollbar-track {
-      background: rgba(255, 255, 255, 0.05); 
-    }
-    ::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.2); 
-      border-radius: 4px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: rgba(255, 255, 255, 0.3); 
-    }
-    
-    /* Glass Utility */
-    .glass-panel {
-      background: rgba(255, 255, 255, 0.03);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    }
-    
-    .glass-panel-hover:hover {
-      background: rgba(255, 255, 255, 0.07);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      box-shadow: 0 0 15px rgba(56, 189, 248, 0.1);
-    }
-
-    .text-glow {
-      text-shadow: 0 0 10px rgba(255,255,255,0.3);
-    }
-  </style>
-<script type="importmap">
-{
-  "imports": {
-    "rxjs": "https://esm.sh/v135/rxjs@7.8.1?es2022",
-    "@angular/compiler": "https://esm.sh/v135/@angular/compiler@18.2.0?es2022",
-    "@angular/common": "https://esm.sh/v135/@angular/common@18.2.0?es2022",
-    "@angular/platform-browser": "https://esm.sh/v135/@angular/platform-browser@18.2.0?es2022",
-    "@angular/core": "https://esm.sh/v135/@angular/core@18.2.0?es2022",
-    "d3": "https://esm.sh/v135/d3@7.9.0?es2022",
-    "tslib": "https://esm.sh/v135/tslib@2.6.3?es2022"
-  }
-}
-</script>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
 </head>
 <body class="text-slate-200 antialiased">
-  <app-root></app-root>
+  <div class="min-h-screen w-full bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-950 relative overflow-hidden">
+    <!-- Decorative Background Blobs -->
+    <div class="absolute top-0 left-0 w-[500px] h-[500px] bg-blue-600 rounded-full mix-blend-screen filter blur-[120px] opacity-20 animate-pulse"></div>
+    <div class="absolute bottom-0 right-0 w-[500px] h-[500px] bg-purple-600 rounded-full mix-blend-screen filter blur-[120px] opacity-20 animate-pulse" style="animation-delay: 2s"></div>
+
+    <!-- Top Navigation / Header -->
+    <header class="relative z-10 px-6 py-6 flex justify-between items-center border-b border-white/5 bg-black/20 backdrop-blur-md">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/30">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+        </div>
+        <h1 class="text-2xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400">
+          Fantasy Command
+        </h1>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <div class="hidden md:flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10">
+          <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+          <span class="text-xs font-medium text-slate-300">Live Updates</span>
+        </div>
+        <button class="p-2 rounded-full bg-white/5 hover:bg-white/10 transition-colors border border-white/10">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+          </svg>
+        </button>
+        <img src="https://picsum.photos/seed/user/40/40" class="w-10 h-10 rounded-full border-2 border-white/10 hover:border-cyan-400 transition-colors cursor-pointer" alt="User Profile">
+      </div>
+    </header>
+
+    <main class="relative z-10 p-6 max-w-[1600px] mx-auto space-y-6">
+      <!-- Key Metrics Row -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Total Points -->
+        <div class="glass-panel glass-panel-hover rounded-3xl p-5 flex flex-col justify-between relative overflow-hidden group">
+          <div class="absolute -right-6 -top-6 w-24 h-24 bg-cyan-500/20 rounded-full blur-2xl group-hover:bg-cyan-500/30 transition-all"></div>
+          <div class="flex justify-between items-start mb-4">
+            <div>
+              <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">League Leader</p>
+              <h3 class="text-lg font-bold text-white mt-1">Total Points</h3>
+            </div>
+            <div class="px-2 py-1 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-bold">Week 14</div>
+          </div>
+          <div class="flex items-end gap-4">
+            <div id="total-points-value" class="text-4xl font-bold text-white text-glow">0</div>
+            <div class="mb-1 text-sm text-cyan-400 flex items-center">
+              <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+              <span id="total-points-name">Player</span>
+            </div>
+          </div>
+          <div class="w-full bg-white/5 h-1.5 rounded-full mt-4 overflow-hidden">
+            <div id="total-points-bar" class="bg-cyan-500 h-full rounded-full" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <!-- Consistency -->
+        <div class="glass-panel glass-panel-hover rounded-3xl p-5 flex flex-col justify-between relative overflow-hidden group">
+          <div class="absolute -right-6 -top-6 w-24 h-24 bg-purple-500/20 rounded-full blur-2xl group-hover:bg-purple-500/30 transition-all"></div>
+          <div class="flex justify-between items-start mb-4">
+            <div>
+              <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Reliability</p>
+              <h3 class="text-lg font-bold text-white mt-1">Consistency</h3>
+            </div>
+            <div class="px-2 py-1 rounded-lg bg-purple-500/10 border border-purple-500/20 text-purple-400 text-xs font-bold">R2 = 0.95</div>
+          </div>
+          <div class="flex items-end gap-4">
+            <div id="consistency-value" class="text-4xl font-bold text-white text-glow">0%</div>
+            <div class="mb-1 text-sm text-purple-400 flex items-center">
+              <span id="consistency-name">Player</span>
+            </div>
+          </div>
+          <div class="w-full bg-white/5 h-1.5 rounded-full mt-4 overflow-hidden">
+            <div id="consistency-bar" class="bg-purple-500 h-full rounded-full" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <!-- Ceiling -->
+        <div class="glass-panel glass-panel-hover rounded-3xl p-5 flex flex-col justify-between relative overflow-hidden group">
+          <div class="absolute -right-6 -top-6 w-24 h-24 bg-pink-500/20 rounded-full blur-2xl group-hover:bg-pink-500/30 transition-all"></div>
+          <div class="flex justify-between items-start mb-4">
+            <div>
+              <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Explosiveness</p>
+              <h3 class="text-lg font-bold text-white mt-1">Max Ceiling</h3>
+            </div>
+            <div class="px-2 py-1 rounded-lg bg-pink-500/10 border border-pink-500/20 text-pink-400 text-xs font-bold">Upside</div>
+          </div>
+          <div class="flex items-end gap-4">
+            <div id="ceiling-value" class="text-4xl font-bold text-white text-glow">0</div>
+            <div class="mb-1 text-sm text-pink-400 flex items-center">pts</div>
+          </div>
+          <div class="mt-4 text-sm text-slate-400">
+            Held by <span id="ceiling-name" class="text-pink-300 font-semibold">Player</span>
+          </div>
+        </div>
+
+        <!-- Target Share -->
+        <div class="glass-panel glass-panel-hover rounded-3xl p-5 flex flex-col justify-between relative overflow-hidden group">
+          <div class="absolute -right-6 -top-6 w-24 h-24 bg-emerald-500/20 rounded-full blur-2xl group-hover:bg-emerald-500/30 transition-all"></div>
+          <div class="flex justify-between items-start mb-4">
+            <div>
+              <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Usage</p>
+              <h3 class="text-lg font-bold text-white mt-1">Dominator</h3>
+            </div>
+            <div class="px-2 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold">Volume</div>
+          </div>
+          <div class="flex items-end gap-4">
+            <div id="share-value" class="text-4xl font-bold text-white text-glow">0%</div>
+            <div class="mb-1 text-sm text-emerald-400 flex items-center">Share</div>
+          </div>
+          <div class="mt-4 text-sm text-slate-400">
+            Held by <span id="share-name" class="text-emerald-300 font-semibold">Player</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts Section -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Radar Chart -->
+        <div class="glass-panel rounded-3xl p-6 lg:col-span-1 flex flex-col relative lg:h-[500px]">
+          <div class="flex justify-between items-center mb-2 shrink-0 z-20">
+            <div>
+              <h3 class="text-lg font-bold text-white">Metric Rings</h3>
+              <p class="text-xs text-slate-400">Multi-variant performance index</p>
+            </div>
+            <select id="player-select" class="bg-black/40 text-xs text-slate-300 border border-white/10 rounded-lg px-2 py-1 outline-none focus:border-cyan-500 cursor-pointer"></select>
+          </div>
+
+          <div class="flex-1 w-full min-h-[350px] lg:min-h-0 relative flex items-center justify-center">
+            <div id="radar-chart" class="absolute inset-0 z-10"></div>
+            <div class="relative z-0 flex flex-col items-center justify-center gap-1 pointer-events-none">
+              <div class="text-xs font-bold text-slate-400 tracking-widest uppercase">Rating</div>
+              <div id="rating-value" class="text-6xl font-black text-white tracking-tighter drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]">0</div>
+              <div id="rating-meta" class="text-[10px] text-slate-500">POS // TEAM</div>
+            </div>
+          </div>
+
+          <div class="absolute bottom-4 left-6 flex items-center gap-3 z-20">
+            <img id="selected-avatar" src="https://picsum.photos/seed/placeholder/100/100" class="w-10 h-10 rounded-full border border-white/20 object-cover" alt="Player">
+            <div>
+              <div id="selected-name" class="text-sm font-bold text-white">Player Name</div>
+              <div id="selected-meta" class="text-xs text-slate-400">POS - TEAM</div>
+            </div>
+          </div>
+
+          <div class="mt-4 grid grid-cols-3 gap-2 text-[10px] uppercase tracking-widest text-slate-500 font-bold text-center shrink-0 z-20">
+            <div class="flex items-center gap-1 justify-center"><span class="w-2 h-2 rounded-full bg-red-500"></span>Consist</div>
+            <div class="flex items-center gap-1 justify-center"><span class="w-2 h-2 rounded-full bg-orange-500"></span>Ceiling</div>
+            <div class="flex items-center gap-1 justify-center"><span class="w-2 h-2 rounded-full bg-yellow-500"></span>Floor</div>
+            <div class="flex items-center gap-1 justify-center"><span class="w-2 h-2 rounded-full bg-cyan-500"></span>PPG</div>
+            <div class="flex items-center gap-1 justify-center"><span class="w-2 h-2 rounded-full bg-violet-500"></span>Share</div>
+          </div>
+        </div>
+
+        <!-- Bar Chart -->
+        <div class="glass-panel rounded-3xl p-6 lg:col-span-2 flex flex-col lg:h-[500px]">
+          <div class="flex justify-between items-center mb-6 shrink-0">
+            <div>
+              <h3 class="text-lg font-bold text-white">Efficiency Spectrum</h3>
+              <p class="text-xs text-slate-400">Points Per Game distribution across top tier assets.</p>
+            </div>
+            <div class="flex gap-2" id="filter-buttons">
+              <button data-filter="all" class="px-3 py-1 rounded-lg bg-white/10 text-xs text-white border border-white/5 hover:bg-white/20 transition">All</button>
+              <button data-filter="WR" class="px-3 py-1 rounded-lg bg-transparent text-xs text-slate-500 hover:text-white transition">WR</button>
+              <button data-filter="RB" class="px-3 py-1 rounded-lg bg-transparent text-xs text-slate-500 hover:text-white transition">RB</button>
+              <button data-filter="QB" class="px-3 py-1 rounded-lg bg-transparent text-xs text-slate-500 hover:text-white transition">QB</button>
+              <button data-filter="TE" class="px-3 py-1 rounded-lg bg-transparent text-xs text-slate-500 hover:text-white transition">TE</button>
+            </div>
+          </div>
+          <div class="flex-1 w-full min-h-[350px] lg:min-h-0 relative">
+            <div id="bar-chart" class="absolute inset-0"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Leaderboard Table -->
+      <div class="glass-panel rounded-3xl overflow-hidden flex flex-col">
+        <div class="p-6 border-b border-white/5 flex justify-between items-center bg-gradient-to-r from-white/5 to-transparent">
+          <h3 class="text-lg font-bold text-white">League Leaderboard</h3>
+          <button class="text-xs text-cyan-400 hover:text-cyan-300 font-medium">View Full Rankings →</button>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="text-xs text-slate-400 uppercase tracking-wider bg-black/20">
+                <th class="px-6 py-4 font-semibold">Rank</th>
+                <th class="px-6 py-4 font-semibold">Player</th>
+                <th class="px-6 py-4 font-semibold text-center">Pos</th>
+                <th class="px-6 py-4 font-semibold text-right">Points</th>
+                <th class="px-6 py-4 font-semibold text-right">PPG</th>
+                <th class="px-6 py-4 font-semibold text-right">Ceiling</th>
+                <th class="px-6 py-4 font-semibold text-center">Trend</th>
+              </tr>
+            </thead>
+            <tbody id="leaderboard-body" class="text-sm divide-y divide-white/5"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="app.js"></script>
 </body>
 </html>
