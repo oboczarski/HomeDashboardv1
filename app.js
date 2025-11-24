@@ -1,6 +1,6 @@
 // Fantasy Command - Vanilla JS rebuild
 // Data model
-const players = [
+const defaultPlayers = [
   {
     id: '1',
     name: 'Justin Jefferson',
@@ -115,8 +115,9 @@ const players = [
   }
 ];
 
+let players = [];
 const state = {
-  selectedPlayerId: players[0].id,
+  selectedPlayerId: null,
   filter: 'all'
 };
 
@@ -176,6 +177,7 @@ function renderSummary() {
 
 function renderSelect() {
   const select = document.getElementById('player-select');
+  if (!select) return;
   select.innerHTML = players
     .map(p => `<option value="${p.id}" ${p.id === state.selectedPlayerId ? 'selected' : ''}>${p.name}</option>`)
     .join('');
@@ -183,9 +185,7 @@ function renderSelect() {
 
 function renderSelectedDetails() {
   const player = getSelected();
-  document.getElementById('selected-avatar').src = player.avatarUrl;
-  setText('selected-name', player.name);
-  setText('selected-meta', `${player.position} - ${player.team}`);
+  // Removed avatar/name/meta updates for the deleted block
   setText('rating-value', calculatePlayerScore(player));
   setText('rating-meta', `${player.position} // ${player.team}`);
 }
@@ -202,36 +202,38 @@ function renderBar() {
 
 function renderTable() {
   const tbody = document.getElementById('leaderboard-body');
+  if (!tbody) return;
+  
   const rows = [...players]
     .sort((a, b) => b.totalPoints - a.totalPoints)
     .map((p, i) => {
       const posClass =
-        p.position === 'WR' ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' :
-        p.position === 'RB' ? 'bg-green-500/10 text-green-400 border-green-500/20' :
-        p.position === 'QB' ? 'bg-pink-500/10 text-pink-400 border-pink-500/20' :
-        'bg-orange-500/10 text-orange-400 border-orange-500/20';
+        p.position === 'WR' ? 'fc-pos-wr' :
+        p.position === 'RB' ? 'fc-pos-rb' :
+        p.position === 'QB' ? 'fc-pos-qb' :
+        'fc-pos-te';
 
       const trendIcon = trendSvg(p.trend);
 
       return `
-        <tr class="group hover:bg-white/5 transition-colors">
-          <td class="px-6 py-4 text-slate-500 font-mono">#${i + 1}</td>
-          <td class="px-6 py-4">
-            <div class="flex items-center gap-3">
-              <img src="${p.avatarUrl}" class="w-8 h-8 rounded-full bg-slate-800 object-cover" alt="">
+        <tr class="fc-tr">
+          <td class="fc-td fc-td-rank">#${i + 1}</td>
+          <td class="fc-td">
+            <div class="fc-td-player">
+              <img src="${p.avatarUrl}" class="fc-avatar-sm" alt="">
               <div>
-                <div class="font-medium text-white group-hover:text-cyan-400 transition-colors">${p.name}</div>
-                <div class="text-xs text-slate-500">${p.team}</div>
+                <div class="fc-player-name">${p.name}</div>
+                <div class="fc-player-team">${p.team}</div>
               </div>
             </div>
           </td>
-          <td class="px-6 py-4 text-center">
-            <span class="px-2 py-1 rounded text-[10px] font-bold border border-white/10 ${posClass}">${p.position}</span>
+          <td class="fc-td fc-text-center">
+            <span class="fc-pos-badge ${posClass}">${p.position}</span>
           </td>
-          <td class="px-6 py-4 text-right font-bold text-white">${p.totalPoints.toFixed(1)}</td>
-          <td class="px-6 py-4 text-right text-slate-300">${p.ppg.toFixed(1)}</td>
-          <td class="px-6 py-4 text-right text-slate-300">${p.ceiling}</td>
-          <td class="px-6 py-4 text-center">${trendIcon}</td>
+          <td class="fc-td fc-text-right fc-td-val">${p.totalPoints.toFixed(1)}</td>
+          <td class="fc-td fc-text-right fc-td-sub">${p.ppg.toFixed(1)}</td>
+          <td class="fc-td fc-text-right fc-td-sub">${p.ceiling}</td>
+          <td class="fc-td fc-text-center">${trendIcon}</td>
         </tr>
       `;
     })
@@ -242,21 +244,27 @@ function renderTable() {
 
 // Event wiring
 function wireEvents() {
-  document.getElementById('player-select').addEventListener('change', e => {
-    state.selectedPlayerId = e.target.value;
-    renderSelectedDetails();
-    renderRadar();
-  });
+  const select = document.getElementById('player-select');
+  if (select) {
+    select.addEventListener('change', e => {
+      state.selectedPlayerId = e.target.value;
+      renderSelectedDetails();
+      renderRadar();
+    });
+  }
 
-  document.getElementById('filter-buttons').addEventListener('click', e => {
-    const btn = e.target.closest('button');
-    if (!btn) return;
-    const filter = btn.dataset.filter;
-    if (!filter) return;
-    state.filter = filter;
-    updateFilterButtons();
-    renderBar();
-  });
+  const filterBtns = document.getElementById('filter-buttons');
+  if (filterBtns) {
+    filterBtns.addEventListener('click', e => {
+      const btn = e.target.closest('button');
+      if (!btn) return;
+      const filter = btn.dataset.filter;
+      if (!filter) return;
+      state.filter = filter;
+      updateFilterButtons();
+      renderBar();
+    });
+  }
 
   window.addEventListener('resize', debounce(() => {
     renderRadar();
@@ -267,11 +275,7 @@ function wireEvents() {
 function updateFilterButtons() {
   document.querySelectorAll('#filter-buttons button').forEach(btn => {
     const active = btn.dataset.filter === state.filter;
-    btn.classList.toggle('bg-white/10', active);
-    btn.classList.toggle('text-white', active);
-    btn.classList.toggle('border', active);
-    btn.classList.toggle('border-white/5', active);
-    btn.classList.toggle('text-slate-500', !active);
+    btn.classList.toggle('fc-filter-btn--active', active);
   });
 }
 
@@ -296,12 +300,12 @@ function debounce(fn, delay = 150) {
 
 function trendSvg(trend) {
   if (trend === 'up') {
-    return '<span class="text-green-400 flex justify-center"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg></span>';
+    return '<span style="color: var(--color-emerald-light); display: flex; justify-content: center;"><svg class="fc-icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg></span>';
   }
   if (trend === 'down') {
-    return '<span class="text-red-400 flex justify-center"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"></path></svg></span>';
+    return '<span style="color: var(--color-red); display: flex; justify-content: center;"><svg class="fc-icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"></path></svg></span>';
   }
-  return '<span class="text-slate-500 flex justify-center"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14"></path></svg></span>';
+  return '<span style="color: var(--text-muted); display: flex; justify-content: center;"><svg class="fc-icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14"></path></svg></span>';
 }
 
 // D3 radar
@@ -322,7 +326,8 @@ function drawRadarChart(containerId, data) {
     .attr('transform', `translate(${width / 2},${height / 2})`);
 
   const numRings = data.length;
-  const maxRadius = Math.min(width, height) / 2 - 20;
+  // Reduced maxRadius to prevent clipping of labels
+  const maxRadius = Math.min(width, height) / 2 - 30;
   const innerRadius = 40;
   const ringWidth = (maxRadius - innerRadius) / numRings;
   const gap = 4;
@@ -546,7 +551,10 @@ function drawBarChart(containerId, data) {
 }
 
 // Initialize
-function init() {
+window.initFantasyDashboard = function(data) {
+  players = data || defaultPlayers;
+  state.selectedPlayerId = players[0].id;
+  
   renderSummary();
   renderSelect();
   renderSelectedDetails();
@@ -555,6 +563,9 @@ function init() {
   renderTable();
   updateFilterButtons();
   wireEvents();
-}
+};
 
-document.addEventListener('DOMContentLoaded', init);
+document.addEventListener('DOMContentLoaded', () => {
+  window.initFantasyDashboard();
+});
+
