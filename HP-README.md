@@ -10,12 +10,12 @@ python -m http.server 3000
 # then open http://localhost:3000
 ```
 
-Everything is static: sample data ships inside `app.js`, charts are rendered with D3, and styles are fully defined in `styles.css`.
+Everything is static: sample data ships inside `HP-app.js`, charts are rendered with D3, and styles are fully defined in `HP-styles.css`.
 
 ## Files
-- `index.html` – page layout and D3 includes
-- `app.js` – data, state, rendering logic, charts, interactions
-- `styles.css` – complete custom styling, glassmorphism, and responsive layout
+- `HP-index.html` – page layout and D3 includes
+- `HP-app.js` – data, state, rendering logic, charts, interactions
+- `HP-styles.css` – complete custom styling, glassmorphism, and responsive layout
 
 ## Notes
 - Player selector updates the radar and rating in real time.
