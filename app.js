@@ -100,12 +100,104 @@ function renderSummary() {
   setText('share-name', topShare.name);
 }
 
-function renderSelect() {
-  const select = document.getElementById('player-select');
-  if (!select) return;
-  select.innerHTML = players
-    .map(p => `<option value="${p.id}" ${p.id === state.selectedPlayerId ? 'selected' : ''}>${p.name}</option>`)
+function renderCustomSelect() {
+  const optionsContainer = document.getElementById('player-select-options');
+  const label = document.getElementById('player-select-label');
+  if (!optionsContainer) return;
+
+  // Populate options
+  optionsContainer.innerHTML = players
+    .map(p => `
+      <li class="fc-option ${p.id === state.selectedPlayerId ? 'is-selected' : ''}" data-value="${p.id}">
+        <span>${p.name}</span>
+        <span class="fc-option-team">${p.position} - ${p.team}</span>
+      </li>
+    `)
     .join('');
+
+  // Update label
+  const selected = getSelected();
+  if (label && selected) {
+    label.textContent = selected.name;
+  }
+}
+
+function setupCustomSelect() {
+  const container = document.getElementById('player-select-container');
+  const trigger = document.getElementById('player-select-trigger');
+  const dropdown = document.getElementById('player-select-dropdown');
+  const searchInput = document.getElementById('player-select-search');
+  const optionsContainer = document.getElementById('player-select-options');
+
+  if (!container || !trigger || !dropdown || !searchInput || !optionsContainer) return;
+
+  // Toggle Dropdown
+  trigger.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isOpen = container.classList.contains('is-open');
+    
+    if (isOpen) {
+      closeDropdown();
+    } else {
+      openDropdown();
+    }
+  });
+
+  // Close on click outside
+  document.addEventListener('click', (e) => {
+    if (!container.contains(e.target)) {
+      closeDropdown();
+    }
+  });
+
+  // Search Filter
+  searchInput.addEventListener('input', (e) => {
+    const term = e.target.value.toLowerCase();
+    const options = optionsContainer.querySelectorAll('.fc-option');
+    
+    options.forEach(opt => {
+      const text = opt.textContent.toLowerCase();
+      if (text.includes(term)) {
+        opt.style.display = 'flex';
+      } else {
+        opt.style.display = 'none';
+      }
+    });
+  });
+
+  // Option Selection
+  optionsContainer.addEventListener('click', (e) => {
+    const option = e.target.closest('.fc-option');
+    if (!option) return;
+
+    const value = option.dataset.value;
+    if (value) {
+      state.selectedPlayerId = value;
+      
+      // Update UI
+      renderCustomSelect(); // Re-renders options to update selected state
+      renderSelectedDetails();
+      renderRadar();
+      
+      closeDropdown();
+    }
+  });
+
+  function openDropdown() {
+    container.classList.add('is-open');
+    trigger.classList.add('is-open');
+    searchInput.value = ''; // Clear search
+    searchInput.focus();
+    
+    // Reset options visibility
+    const options = optionsContainer.querySelectorAll('.fc-option');
+    options.forEach(opt => opt.style.display = 'flex');
+  }
+
+  function closeDropdown() {
+    container.classList.remove('is-open');
+    trigger.classList.remove('is-open');
+  }
 }
 
 function renderSelectedDetails() {
@@ -173,14 +265,7 @@ function renderScatter() {
 
 // Event wiring
 function wireEvents() {
-  const select = document.getElementById('player-select');
-  if (select) {
-    select.addEventListener('change', e => {
-      state.selectedPlayerId = e.target.value;
-      renderSelectedDetails();
-      renderRadar();
-    });
-  }
+  // Old select listener removed
 
   const filterBtns = document.getElementById('filter-buttons');
   if (filterBtns) {
@@ -676,7 +761,8 @@ window.initFantasyDashboard = function(data) {
   state.selectedPlayerId = players[0].id;
   
   renderSummary();
-  renderSelect();
+  renderCustomSelect();
+  setupCustomSelect();
   renderSelectedDetails();
   renderRadar();
   renderBar();
