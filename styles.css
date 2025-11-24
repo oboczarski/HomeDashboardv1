@@ -611,6 +611,10 @@
 }
 
 /* Scatter Plot Specifics */
+.fc-scatter-panel {
+  min-height: 40em; /* Increased height */
+}
+
 .fc-legend-inline {
   display: flex;
   gap: 1em;

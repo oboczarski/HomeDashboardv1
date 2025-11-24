@@ -254,7 +254,7 @@ function drawRadarChart(containerId, data) {
   const ringWidth = (maxRadius - innerRadius) / numRings;
   const gap = size * 0.01; // Proportional gap
   const colors = ['#ef4444', '#f97316', '#eab308', '#22d3ee', '#8b5cf6', '#10b981', '#ec4899', '#a855f7'];
-  const fontSize = Math.max(8, size * 0.035); // Scale font, min 8px
+  const fontSize = Math.max(8, size * 0.025); // Reduced from 0.035
 
   data.forEach((d, i) => {
     const rInner = innerRadius + i * ringWidth + gap;
@@ -403,7 +403,7 @@ function drawBarChart(containerId, data) {
   const strokeMain = Math.max(1, width * 0.008);
   const strokeGlow = Math.max(2, width * 0.015);
   const fontSizeVal = Math.max(8, width * 0.025);
-  const fontSizeAxis = Math.max(8, width * 0.02);
+  const fontSizeAxis = Math.max(8, width * 0.015); // Reduced from 0.02
 
   barGroups.append('rect')
     .attr('x', d => x(d.label))
@@ -550,7 +550,7 @@ function drawScatterChart(containerId, data) {
     .attr('y', innerHeight + margin.bottom - 5)
     .attr('text-anchor', 'middle')
     .attr('fill', '#94a3b8')
-    .attr('font-size', '10px')
+    .attr('font-size', '12px')
     .attr('font-weight', 'bold')
     .attr('letter-spacing', '0.1em')
     .text('CONSISTENCY');
@@ -561,7 +561,7 @@ function drawScatterChart(containerId, data) {
     .attr('y', -margin.left + 15)
     .attr('text-anchor', 'middle')
     .attr('fill', '#94a3b8')
-    .attr('font-size', '10px')
+    .attr('font-size', '12px')
     .attr('font-weight', 'bold')
     .attr('letter-spacing', '0.1em')
     .text('CEILING');
