@@ -59,8 +59,8 @@
   position: relative;
   overflow: hidden;
 
-  /* Default Font Size (Desktop) */
-  font-size: 16px;
+  /* Default Font Size (Locked to 1114px view) */
+  font-size: 12.81px;
 }
 
 /* Reset & Base within Dashboard */
@@ -73,11 +73,9 @@
 /* 
    Aggressive scaling to maintain desktop layout on all screens.
    We scale the dashboard's font-size based on viewport width (vw).
-   At 1400px width, 1.15vw is approx 16px.
-   At 375px width, 1.15vw is approx 4.3px.
-   This ensures 1em always represents the same % of the screen width.
+   Only applies below 1114px width.
 */
-@media (max-width: 1400px) {
+@media (max-width: 1114px) {
   .fc-dashboard {
     font-size: 1.15vw;
   }
@@ -87,7 +85,7 @@
   position: relative;
   z-index: 10;
   padding: 1.5em;
-  max-width: 100em; /* 1600px / 16 */
+  max-width: 1114px; /* Locked width */
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -123,90 +121,7 @@
   50% { opacity: 0.25; }
 }
 
-/* Header */
-.fc-header {
-  position: relative;
-  z-index: 10;
-  padding: 1.5em;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  background: rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(0.75em);
-}
-
-.fc-header__brand {
-  display: flex;
-  align-items: center;
-  gap: 0.75em;
-}
-
-.fc-logo-box {
-  width: 2.5em;
-  height: 2.5em;
-  border-radius: 0.75em;
-  background: linear-gradient(to top right, var(--color-cyan), #2563eb);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 0.625em 0.9375em -0.1875em rgba(6, 182, 212, 0.3);
-}
-
-.fc-title {
-  font-weight: 700;
-  letter-spacing: -0.025em;
-  background: linear-gradient(to right, #fff, #94a3b8);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.fc-header__controls {
-  display: flex;
-  align-items: center;
-  gap: 1em;
-}
-
-.fc-live-badge {
-  display: none;
-  align-items: center;
-  gap: 0.5em;
-  padding: 0.375em 1em;
-  border-radius: var(--radius-full);
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-@media (min-width: 768px) {
-  .fc-live-badge { display: flex; }
-}
-
-.fc-dot-pulse {
-  width: 0.5em;
-  height: 0.5em;
-  border-radius: 50%;
-  background-color: #4ade80;
-  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-.fc-live-text {
-  font-size: 0.75em;
-  font-weight: 500;
-  color: var(--text-secondary);
-}
-
-.fc-btn-icon {
-  padding: 0.5em;
-  border-radius: var(--radius-full);
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-.fc-btn-icon:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
+/* Header Styles Removed */
 
 .fc-avatar-sm {
   width: 2.5em;
@@ -670,12 +585,12 @@
 
 /* --- GLOBAL HEADINGS (Desktop) --- */
 @media (min-width: 769px) {
-  .fc-title { font-size: 1.5em; }
+  /* .fc-title removed */
 }
 
 /* --- GLOBAL HEADINGS (Mobile) --- */
 @media (max-width: 768px) {
-  .fc-title { font-size: 1.8em; }
+  /* .fc-title removed */
 }
 
 /* --- SUMMARY CARDS (Desktop) --- */
