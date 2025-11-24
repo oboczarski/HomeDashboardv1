@@ -65,15 +65,22 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Proportional Scaling for Mobile */
-@media (max-width: 1024px) {
-  html { font-size: 14px; }
+/* Proportional Scaling for Mobile - "Zoom Out" Strategy */
+html {
+  font-size: 16px; /* Default base */
 }
-@media (max-width: 768px) {
-  html { font-size: 12px; }
-}
-@media (max-width: 480px) {
-  html { font-size: 10px; }
+
+/* 
+   Aggressive scaling to maintain desktop layout on all screens.
+   We scale the root font-size based on viewport width (vw).
+   At 1400px width, 1.15vw is approx 16px.
+   At 375px width, 1.15vw is approx 4.3px.
+   This ensures 1rem always represents the same % of the screen width.
+*/
+@media (max-width: 1400px) {
+  html {
+    font-size: 1.15vw;
+  }
 }
 
 /* Layout Containers */
@@ -231,23 +238,14 @@ body {
 /* Grid Systems */
 .fc-grid-metrics {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(4, 1fr);
   gap: 1.5rem;
-}
-@media (min-width: 768px) {
-  .fc-grid-metrics { grid-template-columns: repeat(2, 1fr); }
-}
-@media (min-width: 1024px) {
-  .fc-grid-metrics { grid-template-columns: repeat(4, 1fr); }
 }
 
 .fc-grid-charts {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr 2fr;
   gap: 1.5rem;
-}
-@media (min-width: 1024px) {
-  .fc-grid-charts { grid-template-columns: 1fr 2fr; }
 }
 
 /* Cards & Glassmorphism */
@@ -385,7 +383,7 @@ body {
 
 /* Charts */
 .fc-chart-panel {
-  min-height: 500px;
+  min-height: 31.25rem; /* was 500px */
   display: flex;
   flex-direction: column;
 }
@@ -419,7 +417,7 @@ body {
 .fc-chart-container {
   flex: 1;
   width: 100%;
-  min-height: 350px;
+  min-height: 21.875rem; /* was 350px */
   position: relative;
 }
 

@@ -317,6 +317,7 @@ function drawRadarChart(containerId, data) {
   const rect = container.getBoundingClientRect();
   const width = rect.width || 360;
   const height = rect.height || 360;
+  const size = Math.min(width, height);
 
   const svg = d3.select(container)
     .append('svg')
@@ -326,12 +327,13 @@ function drawRadarChart(containerId, data) {
     .attr('transform', `translate(${width / 2},${height / 2})`);
 
   const numRings = data.length;
-  // Reduced maxRadius to prevent clipping of labels
-  const maxRadius = Math.min(width, height) / 2 - 30;
-  const innerRadius = 40;
+  // Use proportional padding instead of fixed 30px
+  const maxRadius = size / 2 * 0.85; 
+  const innerRadius = size * 0.12; // Proportional inner hole
   const ringWidth = (maxRadius - innerRadius) / numRings;
-  const gap = 4;
+  const gap = size * 0.01; // Proportional gap
   const colors = ['#ef4444', '#f97316', '#eab308', '#22d3ee', '#8b5cf6'];
+  const fontSize = Math.max(8, size * 0.035); // Scale font, min 8px
 
   data.forEach((d, i) => {
     const rInner = innerRadius + i * ringWidth + gap;
@@ -384,7 +386,7 @@ function drawRadarChart(containerId, data) {
       .attr('dy', '0.35em')
       .text(d.axis.substring(0, 3).toUpperCase())
       .attr('fill', '#fff')
-      .attr('font-size', '9px')
+      .attr('font-size', `${fontSize}px`)
       .attr('font-weight', 'bold')
       .attr('opacity', 0.8)
       .style('pointer-events', 'none');
@@ -401,7 +403,13 @@ function drawBarChart(containerId, data) {
   const width = rect.width || 640;
   const height = rect.height || 360;
 
-  const margin = { top: 40, right: 15, bottom: 40, left: 15 };
+  // Proportional margins
+  const margin = { 
+    top: height * 0.12, 
+    right: width * 0.03, 
+    bottom: height * 0.12, 
+    left: width * 0.03 
+  };
   const innerWidth = width - margin.left - margin.right;
   const innerHeight = height - margin.top - margin.bottom;
 
@@ -469,6 +477,12 @@ function drawBarChart(containerId, data) {
 
   const barWidth = x.bandwidth();
   const radius = barWidth / 2;
+  
+  // Proportional stroke widths
+  const strokeMain = Math.max(1, width * 0.008);
+  const strokeGlow = Math.max(2, width * 0.015);
+  const fontSizeVal = Math.max(8, width * 0.025);
+  const fontSizeAxis = Math.max(8, width * 0.02);
 
   barGroups.append('rect')
     .attr('x', d => x(d.label))
@@ -479,7 +493,7 @@ function drawBarChart(containerId, data) {
     .attr('ry', radius)
     .attr('fill', 'none')
     .attr('stroke', (d, i) => colorScale(i))
-    .attr('stroke-width', 6)
+    .attr('stroke-width', strokeGlow)
     .attr('stroke-opacity', 0.3)
     .style('filter', 'url(#neon-glow)')
     .transition()
@@ -513,7 +527,7 @@ function drawBarChart(containerId, data) {
     .attr('ry', radius)
     .attr('fill', 'none')
     .attr('stroke', (d, i) => colorScale(i))
-    .attr('stroke-width', 2.5)
+    .attr('stroke-width', strokeMain)
     .transition()
     .duration(1000)
     .delay((d, i) => i * 50)
@@ -527,14 +541,14 @@ function drawBarChart(containerId, data) {
     .attr('y', innerHeight)
     .attr('text-anchor', 'middle')
     .attr('fill', (d, i) => colorScale(i))
-    .attr('font-size', '14px')
+    .attr('font-size', `${fontSizeVal}px`)
     .attr('font-weight', '700')
     .style('text-shadow', '0 0 10px rgba(0,0,0,1)')
     .style('opacity', 0)
     .transition()
     .duration(1000)
     .delay((d, i) => i * 50 + 400)
-    .attr('y', d => y(d.value) - 10)
+    .attr('y', d => y(d.value) - (height * 0.02))
     .style('opacity', 1);
 
   g.append('g')
@@ -543,9 +557,9 @@ function drawBarChart(containerId, data) {
     .selectAll('text')
     .style('text-anchor', 'middle')
     .style('fill', '#94a3b8')
-    .style('font-size', '12px')
+    .style('font-size', `${fontSizeAxis}px`)
     .style('font-weight', '500')
-    .attr('dy', '18px');
+    .attr('dy', '1.5em');
 
   g.select('.domain').remove();
 }
