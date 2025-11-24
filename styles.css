@@ -154,7 +154,6 @@
 }
 
 .fc-title {
-  font-size: 1.5em;
   font-weight: 700;
   letter-spacing: -0.025em;
   background: linear-gradient(to right, #fff, #94a3b8);
@@ -243,7 +242,6 @@
 .fc-card {
   position: relative;
   border-radius: var(--radius-lg);
-  padding: 1.25em;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -288,11 +286,9 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 1em;
 }
 
 .fc-card__subtitle {
-  font-size: 0.75em;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -300,16 +296,13 @@
 }
 
 .fc-card__title {
-  font-size: 1.125em;
   font-weight: 700;
   color: white;
   margin-top: 0.25em;
 }
 
 .fc-badge {
-  padding: 0.25em 0.5em;
   border-radius: 0.5em;
-  font-size: 0.75em;
   font-weight: 700;
   border: 1px solid transparent;
 }
@@ -325,7 +318,6 @@
 }
 
 .fc-metric-value {
-  font-size: 2.25em;
   font-weight: 700;
   color: white;
   line-height: 1;
@@ -336,8 +328,6 @@
 }
 
 .fc-metric-sub {
-  margin-bottom: 0.25em;
-  font-size: 0.875em;
   display: flex;
   align-items: center;
 }
@@ -367,8 +357,6 @@
 .fc-bg-purple { background-color: var(--color-purple); }
 
 .fc-card__footer {
-  margin-top: 1em;
-  font-size: 0.875em;
   color: var(--text-secondary);
 }
 
@@ -389,7 +377,6 @@
 }
 
 .fc-card__subtitle-text {
-  font-size: 0.75em;
   color: var(--text-secondary);
 }
 
@@ -466,8 +453,6 @@
   margin-top: 1em;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 0.5em;
-  font-size: 0.9em; /* Increased from 0.625em */
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--text-muted);
@@ -612,13 +597,13 @@
 
 /* Scatter Plot Specifics */
 .fc-scatter-panel {
-  min-height: 45em; /* Reduced for desktop */
+  display: flex;
+  flex-direction: column;
 }
 
 .fc-legend-inline {
   display: flex;
   gap: 1em;
-  font-size: 1.2em; /* Increased from 1em */
   font-weight: 700;
   color: var(--text-secondary);
   text-transform: uppercase;
@@ -676,26 +661,73 @@
 .scatter-dot-wr { fill: var(--color-cyan-light); filter: drop-shadow(0 0 8px var(--color-cyan)); }
 .scatter-dot-te { fill: var(--color-orange); filter: drop-shadow(0 0 8px var(--color-orange)); }
 
-/* Mobile Specific Overrides */
+/* =========================================
+   RESPONSIVE SIZING & LAYOUT RULES
+   Separated for thorough implementation
+   ========================================= */
+
 .fc-legend-abbr { display: none; } /* Default hidden */
 
+/* --- GLOBAL HEADINGS (Desktop) --- */
+@media (min-width: 769px) {
+  .fc-title { font-size: 1.5em; }
+}
+
+/* --- GLOBAL HEADINGS (Mobile) --- */
 @media (max-width: 768px) {
-  /* Headings: Bigger on mobile */
-  .fc-title {
-    font-size: 1.8em;
-  }
-  .fc-card__title {
-    font-size: 1.7em;
-  }
+  .fc-title { font-size: 1.8em; }
+}
+
+/* --- SUMMARY CARDS (Desktop) --- */
+@media (min-width: 769px) {
+  .fc-summary-card { padding: 1.25em; }
+  .fc-summary-card .fc-card__header { margin-bottom: 1em; }
+  .fc-summary-card .fc-card__title { font-size: 1.125em; }
+  .fc-summary-card .fc-card__subtitle { font-size: 0.75em; }
+  .fc-summary-card .fc-badge { padding: 0.25em 0.5em; font-size: 0.75em; }
+  .fc-summary-card .fc-metric-value { font-size: 2.25em; }
+  .fc-summary-card .fc-metric-sub { margin-bottom: 0.25em; font-size: 0.875em; }
+  .fc-summary-card .fc-card__footer { margin-top: 1em; font-size: 0.875em; }
+}
+
+/* --- SUMMARY CARDS (Mobile) --- */
+@media (max-width: 768px) {
+  .fc-summary-card { padding: 1.5em; }
+  .fc-summary-card .fc-card__header { margin-bottom: 1.25em; }
+  .fc-summary-card .fc-card__title { font-size: 1.4em; }
+  .fc-summary-card .fc-card__subtitle { font-size: 0.85em; }
+  .fc-summary-card .fc-badge { padding: 0.35em 0.75em; font-size: 0.85em; }
+  .fc-summary-card .fc-metric-value { font-size: 2.75em; }
+  .fc-summary-card .fc-metric-sub { margin-bottom: 0.35em; font-size: 1em; }
+  .fc-summary-card .fc-card__footer { margin-top: 1.25em; font-size: 1em; }
+}
+
+/* --- CHART PANELS (Desktop) --- */
+@media (min-width: 769px) {
+  .fc-chart-panel { padding: 1.25em; }
+  .fc-chart-panel .fc-card__title { font-size: 1.125em; }
+  .fc-chart-panel .fc-card__subtitle-text { font-size: 0.75em; }
+  
+  /* Legends */
+  .fc-legend { font-size: 0.9em; gap: 0.5em; }
+  .fc-legend-inline { font-size: 1.2em; }
+  
+  /* Scatter Panel */
+  .fc-scatter-panel { min-height: 45em; }
+}
+
+/* --- CHART PANELS (Mobile) --- */
+@media (max-width: 768px) {
+  .fc-chart-panel { padding: 1.5em; }
+  .fc-chart-panel .fc-card__title { font-size: 1.4em; }
+  .fc-chart-panel .fc-card__subtitle-text { font-size: 0.85em; }
 
   /* Scatter Panel: Tall on mobile */
-  .fc-scatter-panel {
-    min-height: 60em;
-  }
+  .fc-scatter-panel { min-height: 60em; }
 
   /* Radar Legend: Bigger & Abbreviated */
   .fc-legend {
-    font-size: 1.5em; /* Increased for mobile visibility */
+    font-size: 1.5em; 
     gap: 0.75em;
   }
   .fc-legend-full { display: none; }
@@ -703,16 +735,16 @@
 
   /* Scatter Legend: Bigger */
   .fc-legend-inline {
-    font-size: 1.6em; /* Increased for mobile visibility */
+    font-size: 1.6em;
   }
 
   /* Scatter Data Labels: Smaller */
   .scatter-label {
-    font-size: 6px !important; /* Force smaller on mobile */
+    font-size: 6px !important;
   }
 
   /* Scatter Axis Labels: Smaller */
   .scatter-axis-label {
-    font-size: 8px !important; /* Force smaller on mobile */
+    font-size: 8px !important;
   }
 }
