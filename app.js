@@ -504,7 +504,7 @@ function drawScatterChart(containerId, data) {
     top: isMobile ? 10 : height * 0.02, // Very small top margin
     right: width * 0.05, 
     bottom: isMobile ? 40 : height * 0.1, // Fixed bottom for mobile
-    left: isMobile ? 40 : width * 0.08 // Fixed left for mobile (reduced from previous calculation)
+    left: isMobile ? 40 : width * 0.06 // Fixed left for mobile (reduced from previous calculation)
   };
   const innerWidth = width - margin.left - margin.right;
   const innerHeight = height - margin.top - margin.bottom;
@@ -567,7 +567,7 @@ function drawScatterChart(containerId, data) {
   g.append('text')
     .attr('transform', 'rotate(-90)')
     .attr('x', -innerHeight / 2)
-    .attr('y', isMobile ? -30 : -margin.left + 40) // Fixed offset for mobile (closer to axis), adjusted desktop
+    .attr('y', isMobile ? -30 : -margin.left + 20) // Fixed offset for mobile (closer to axis), adjusted desktop
     .attr('text-anchor', 'middle')
     .attr('fill', '#94a3b8')
     .attr('font-size', isMobile ? '8px' : '16px') // Bigger on desktop
