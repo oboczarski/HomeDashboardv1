@@ -343,7 +343,7 @@ function drawRadarChart(containerId, data) {
 
   const numRings = data.length;
   // Use proportional padding instead of fixed 30px
-  const maxRadius = size / 2 * 0.85; 
+  const maxRadius = size / 2 * 0.95; 
   const innerRadius = size * 0.12; // Proportional inner hole
   const ringWidth = (maxRadius - innerRadius) / numRings;
   const gap = size * 0.01; // Proportional gap
