@@ -612,7 +612,7 @@
 
 /* Scatter Plot Specifics */
 .fc-scatter-panel {
-  min-height: 40em; /* Increased height */
+  min-height: 60em; /* Increased height significantly */
 }
 
 .fc-legend-inline {
@@ -640,9 +640,14 @@
 
 .scatter-axis text {
   fill: var(--text-muted);
-  font-size: 10px;
   font-family: var(--font-family);
+  /* Font size handled by JS or specific class overrides below */
 }
+.scatter-axis-label {
+  /* Base style for axis labels */
+  font-size: 12px; 
+}
+
 .scatter-axis line, .scatter-axis path {
   stroke: rgba(255, 255, 255, 0.1);
 }
@@ -663,4 +668,32 @@
   stroke: white;
   stroke-width: 2px;
   filter: drop-shadow(0 0 4px white);
+}
+
+/* Mobile Specific Overrides */
+.fc-legend-abbr { display: none; } /* Default hidden */
+
+@media (max-width: 768px) {
+  /* Radar Legend: Bigger & Abbreviated */
+  .fc-legend {
+    font-size: 0.85em; /* Bigger on mobile */
+    gap: 0.75em;
+  }
+  .fc-legend-full { display: none; }
+  .fc-legend-abbr { display: inline; }
+
+  /* Scatter Legend: Bigger */
+  .fc-legend-inline {
+    font-size: 0.85em; /* Bigger on mobile */
+  }
+
+  /* Scatter Data Labels: Smaller */
+  .scatter-label {
+    font-size: 8px !important; /* Force smaller on mobile */
+  }
+
+  /* Scatter Axis Labels: Smaller */
+  .scatter-axis-label {
+    font-size: 10px !important; /* Force smaller on mobile */
+  }
 }

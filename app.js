@@ -254,7 +254,8 @@ function drawRadarChart(containerId, data) {
   const ringWidth = (maxRadius - innerRadius) / numRings;
   const gap = size * 0.01; // Proportional gap
   const colors = ['#ef4444', '#f97316', '#eab308', '#22d3ee', '#8b5cf6', '#10b981', '#ec4899', '#a855f7'];
-  const fontSize = Math.max(8, size * 0.025); // Reduced from 0.035
+  const fontSize = Math.max(8, size * 0.025); 
+  const isMobile = window.innerWidth < 768;
 
   data.forEach((d, i) => {
     const rInner = innerRadius + i * ringWidth + gap;
@@ -301,16 +302,18 @@ function drawRadarChart(containerId, data) {
         };
       });
 
-    svg.append('text')
-      .attr('x', 5)
-      .attr('y', -(rInner + (ringWidth - gap) / 2))
-      .attr('dy', '0.35em')
-      .text(d.axis.substring(0, 3).toUpperCase())
-      .attr('fill', '#fff')
-      .attr('font-size', `${fontSize}px`)
-      .attr('font-weight', 'bold')
-      .attr('opacity', 0.8)
-      .style('pointer-events', 'none');
+    if (!isMobile) {
+      svg.append('text')
+        .attr('x', 5)
+        .attr('y', -(rInner + (ringWidth - gap) / 2))
+        .attr('dy', '0.35em')
+        .text(d.axis.substring(0, 3).toUpperCase())
+        .attr('fill', '#fff')
+        .attr('font-size', `${fontSize}px`)
+        .attr('font-weight', 'bold')
+        .attr('opacity', 0.8)
+        .style('pointer-events', 'none');
+    }
   });
 }
 
@@ -400,10 +403,11 @@ function drawBarChart(containerId, data) {
   const radius = barWidth / 2;
   
   // Proportional stroke widths
+  const isMobile = window.innerWidth < 768;
   const strokeMain = Math.max(1, width * 0.008);
   const strokeGlow = Math.max(2, width * 0.015);
   const fontSizeVal = Math.max(8, width * 0.025);
-  const fontSizeAxis = Math.max(8, width * 0.015); // Reduced from 0.02
+  const fontSizeAxis = isMobile ? 9 : Math.max(8, width * 0.015);
 
   barGroups.append('rect')
     .attr('x', d => x(d.label))
@@ -469,7 +473,7 @@ function drawBarChart(containerId, data) {
     .transition()
     .duration(1000)
     .delay((d, i) => i * 50 + 400)
-    .attr('y', d => y(d.value) - (height * 0.02))
+    .attr('y', d => y(d.value) - (isMobile ? height * 0.05 : height * 0.02))
     .style('opacity', 1);
 
   g.append('g')
