@@ -4,66 +4,213 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Fantasy Command Dashboard</title>
-  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
   <style>
-    body {
-      font-family: 'Outfit', sans-serif;
-      background-color: #0f172a;
-      overflow-x: hidden; /* Prevent horizontal scroll */
-    }
-    /* Custom Scrollbar */
-    ::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
-    }
-    ::-webkit-scrollbar-track {
-      background: rgba(255, 255, 255, 0.05); 
-    }
-    ::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.2); 
-      border-radius: 4px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: rgba(255, 255, 255, 0.3); 
-    }
-    
-    /* Glass Utility */
-    .glass-panel {
-      background: rgba(255, 255, 255, 0.03);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    }
-    
-    .glass-panel-hover:hover {
-      background: rgba(255, 255, 255, 0.07);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      box-shadow: 0 0 15px rgba(56, 189, 248, 0.1);
-    }
-
-    .text-glow {
-      text-shadow: 0 0 10px rgba(255,255,255,0.3);
-    }
+    /* Standalone demo reset */
+    body.fc-body { margin: 0; background-color: #0f172a; }
   </style>
-<script type="importmap">
-{
-  "imports": {
-    "rxjs": "https://esm.sh/v135/rxjs@7.8.1?es2022",
-    "@angular/compiler": "https://esm.sh/v135/@angular/compiler@18.2.0?es2022",
-    "@angular/common": "https://esm.sh/v135/@angular/common@18.2.0?es2022",
-    "@angular/platform-browser": "https://esm.sh/v135/@angular/platform-browser@18.2.0?es2022",
-    "@angular/core": "https://esm.sh/v135/@angular/core@18.2.0?es2022",
-    "d3": "https://esm.sh/v135/d3@7.9.0?es2022",
-    "tslib": "https://esm.sh/v135/tslib@2.6.3?es2022"
-  }
-}
-</script>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
 </head>
-<body class="text-slate-200 antialiased">
-  <app-root></app-root>
+<body class="fc-body">
+  <div id="fc-dashboard-root" class="fc-dashboard">
+    <!-- Decorative Background Blobs -->
+    <div class="fc-blob fc-blob--blue"></div>
+    <div class="fc-blob fc-blob--purple"></div>
+
+    <!-- Top Navigation / Header -->
+    <header class="fc-header">
+      <div class="fc-header__brand">
+        <div class="fc-logo-box">
+          <svg xmlns="http://www.w3.org/2000/svg" class="fc-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+        </div>
+        <h1 class="fc-title">Fantasy Command</h1>
+      </div>
+
+      <div class="fc-header__controls">
+        <div class="fc-live-badge">
+          <span class="fc-dot-pulse"></span>
+          <span class="fc-live-text">Live Updates</span>
+        </div>
+        <button class="fc-btn-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="fc-icon-sm" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+          </svg>
+        </button>
+        <img src="https://picsum.photos/seed/user/40/40" class="fc-avatar-sm" alt="User Profile">
+      </div>
+    </header>
+
+    <main class="fc-main">
+      <!-- Key Metrics Row -->
+      <div class="fc-grid-metrics">
+        <!-- Total Points -->
+        <div class="fc-card fc-glass fc-card--hover fc-card--cyan">
+          <div class="fc-card__glow"></div>
+          <div class="fc-card__header">
+            <div>
+              <p class="fc-card__subtitle">League Leader</p>
+              <h3 class="fc-card__title">Total Points</h3>
+            </div>
+            <div class="fc-badge fc-badge--cyan">Week 14</div>
+          </div>
+          <div class="fc-metric-row">
+            <div id="total-points-value" class="fc-metric-value fc-text-glow">0</div>
+            <div class="fc-metric-sub fc-text-cyan">
+              <svg class="fc-icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+              <span id="total-points-name">Player</span>
+            </div>
+          </div>
+          <div class="fc-progress-bg">
+            <div id="total-points-bar" class="fc-progress-bar fc-bg-cyan" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <!-- Consistency -->
+        <div class="fc-card fc-glass fc-card--hover fc-card--purple">
+          <div class="fc-card__glow"></div>
+          <div class="fc-card__header">
+            <div>
+              <p class="fc-card__subtitle">Reliability</p>
+              <h3 class="fc-card__title">Consistency</h3>
+            </div>
+            <div class="fc-badge fc-badge--purple">R2 = 0.95</div>
+          </div>
+          <div class="fc-metric-row">
+            <div id="consistency-value" class="fc-metric-value fc-text-glow">0%</div>
+            <div class="fc-metric-sub fc-text-purple">
+              <span id="consistency-name">Player</span>
+            </div>
+          </div>
+          <div class="fc-progress-bg">
+            <div id="consistency-bar" class="fc-progress-bar fc-bg-purple" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <!-- Ceiling -->
+        <div class="fc-card fc-glass fc-card--hover fc-card--pink">
+          <div class="fc-card__glow"></div>
+          <div class="fc-card__header">
+            <div>
+              <p class="fc-card__subtitle">Explosiveness</p>
+              <h3 class="fc-card__title">Max Ceiling</h3>
+            </div>
+            <div class="fc-badge fc-badge--pink">Upside</div>
+          </div>
+          <div class="fc-metric-row">
+            <div id="ceiling-value" class="fc-metric-value fc-text-glow">0</div>
+            <div class="fc-metric-sub fc-text-pink">pts</div>
+          </div>
+          <div class="fc-card__footer">
+            Held by <span id="ceiling-name" class="fc-text-pink-light">Player</span>
+          </div>
+        </div>
+
+        <!-- Target Share -->
+        <div class="fc-card fc-glass fc-card--hover fc-card--emerald">
+          <div class="fc-card__glow"></div>
+          <div class="fc-card__header">
+            <div>
+              <p class="fc-card__subtitle">Usage</p>
+              <h3 class="fc-card__title">Dominator</h3>
+            </div>
+            <div class="fc-badge fc-badge--emerald">Volume</div>
+          </div>
+          <div class="fc-metric-row">
+            <div id="share-value" class="fc-metric-value fc-text-glow">0%</div>
+            <div class="fc-metric-sub fc-text-emerald">Share</div>
+          </div>
+          <div class="fc-card__footer">
+            Held by <span id="share-name" class="fc-text-emerald-light">Player</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts Section -->
+      <div class="fc-grid-charts">
+        <!-- Radar Chart -->
+        <div class="fc-card fc-glass fc-chart-panel fc-radar-panel">
+          <div class="fc-chart-header">
+            <div>
+              <h3 class="fc-card__title">Metric Rings</h3>
+              <p class="fc-card__subtitle-text">Multi-variant performance index</p>
+            </div>
+            <select id="player-select" class="fc-select"></select>
+          </div>
+
+          <div class="fc-chart-container fc-radar-container">
+            <div id="radar-chart" class="fc-chart-canvas"></div>
+            <div class="fc-radar-center">
+              <div class="fc-radar-label">Rating</div>
+              <div id="rating-value" class="fc-radar-score">0</div>
+              <div id="rating-meta" class="fc-radar-meta">POS // TEAM</div>
+            </div>
+          </div>
+
+          <div class="fc-legend">
+            <div class="fc-legend-item"><span class="fc-dot fc-bg-red"></span>Consistency</div>
+            <div class="fc-legend-item"><span class="fc-dot fc-bg-orange"></span>Ceiling</div>
+            <div class="fc-legend-item"><span class="fc-dot fc-bg-yellow"></span>Floor</div>
+            <div class="fc-legend-item"><span class="fc-dot fc-bg-cyan"></span>PPG</div>
+            <div class="fc-legend-item"><span class="fc-dot fc-bg-violet"></span>Share</div>
+            <div class="fc-legend-item"><span class="fc-dot fc-bg-emerald"></span>Red Zone</div>
+            <div class="fc-legend-item"><span class="fc-dot fc-bg-pink"></span>Burst</div>
+            <div class="fc-legend-item"><span class="fc-dot fc-bg-purple"></span>Clutch</div>
+          </div>
+        </div>
+
+        <!-- Bar Chart -->
+        <div class="fc-card fc-glass fc-chart-panel fc-bar-panel">
+          <div class="fc-chart-header">
+            <div>
+              <h3 class="fc-card__title">Efficiency Spectrum</h3>
+              <p class="fc-card__subtitle-text">Points Per Game distribution across top tier assets.</p>
+            </div>
+            <div class="fc-filter-group" id="filter-buttons">
+              <button data-filter="all" class="fc-filter-btn fc-filter-btn--active">All</button>
+              <button data-filter="WR" class="fc-filter-btn">WR</button>
+              <button data-filter="RB" class="fc-filter-btn">RB</button>
+              <button data-filter="QB" class="fc-filter-btn">QB</button>
+              <button data-filter="TE" class="fc-filter-btn">TE</button>
+            </div>
+          </div>
+          <div class="fc-chart-container">
+            <div id="bar-chart" class="fc-chart-canvas"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Leaderboard Table -->
+      <div class="fc-card fc-glass fc-table-card">
+        <div class="fc-table-header">
+          <h3 class="fc-card__title">League Leaderboard</h3>
+          <button class="fc-link-btn">View Full Rankings →</button>
+        </div>
+
+        <div class="fc-table-wrapper">
+          <table class="fc-table">
+            <thead>
+              <tr>
+                <th class="fc-th">Rank</th>
+                <th class="fc-th">Player</th>
+                <th class="fc-th fc-text-center">Pos</th>
+                <th class="fc-th fc-text-right">Points</th>
+                <th class="fc-th fc-text-right">PPG</th>
+                <th class="fc-th fc-text-right">Ceiling</th>
+                <th class="fc-th fc-text-center">Trend</th>
+              </tr>
+            </thead>
+            <tbody id="leaderboard-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="app.js"></script>
 </body>
 </html>
