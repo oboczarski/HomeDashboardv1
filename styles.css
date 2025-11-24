@@ -661,19 +661,33 @@
 }
 
 .scatter-dot {
-  transition: r 0.2s ease;
+  transition: all 0.3s ease;
   cursor: pointer;
 }
 .scatter-dot:hover {
   stroke: white;
   stroke-width: 2px;
-  filter: drop-shadow(0 0 4px white);
+  filter: drop-shadow(0 0 8px white) !important; /* Override specific color glow on hover */
 }
+
+/* Specific Dot Styles to match Legend */
+.scatter-dot-qb { fill: var(--color-pink-light); filter: drop-shadow(0 0 8px var(--color-pink)); }
+.scatter-dot-rb { fill: var(--color-emerald-light); filter: drop-shadow(0 0 8px var(--color-emerald)); }
+.scatter-dot-wr { fill: var(--color-cyan-light); filter: drop-shadow(0 0 8px var(--color-cyan)); }
+.scatter-dot-te { fill: var(--color-orange); filter: drop-shadow(0 0 8px var(--color-orange)); }
 
 /* Mobile Specific Overrides */
 .fc-legend-abbr { display: none; } /* Default hidden */
 
 @media (max-width: 768px) {
+  /* Headings: Bigger on mobile */
+  .fc-title {
+    font-size: 1.8em;
+  }
+  .fc-card__title {
+    font-size: 1.7em;
+  }
+
   /* Scatter Panel: Tall on mobile */
   .fc-scatter-panel {
     min-height: 60em;
@@ -681,7 +695,7 @@
 
   /* Radar Legend: Bigger & Abbreviated */
   .fc-legend {
-    font-size: 1.3em; /* Even bigger on mobile */
+    font-size: 1.5em; /* Increased for mobile visibility */
     gap: 0.75em;
   }
   .fc-legend-full { display: none; }
@@ -689,7 +703,7 @@
 
   /* Scatter Legend: Bigger */
   .fc-legend-inline {
-    font-size: 1.4em; /* Even bigger on mobile */
+    font-size: 1.6em; /* Increased for mobile visibility */
   }
 
   /* Scatter Data Labels: Smaller */

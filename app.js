@@ -588,17 +588,16 @@ function drawScatterChart(containerId, data) {
     .data(data)
     .enter()
     .append('circle')
-    .attr('class', 'scatter-dot')
+    .attr('class', d => `scatter-dot scatter-dot-${d.position.toLowerCase()}`)
     .attr('cx', d => x(d.consistency))
     .attr('cy', d => y(d.ceiling))
     .attr('r', 0)
-    .attr('fill', d => colorMap[d.position] || '#cbd5e1')
-    .attr('opacity', 0.8)
+    // fill is handled by CSS
     .transition()
     .duration(1000)
     .delay((d, i) => i * 30)
     .ease(d3.easeBackOut)
-    .attr('r', width * 0.008 + 3); // Responsive radius
+    .attr('r', isMobile ? 3.5 : 7); // Responsive radius: smaller on mobile, bigger on desktop
 
   // Labels with collision avoidance
   const labels = g.selectAll('.scatter-label')
