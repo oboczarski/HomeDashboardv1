@@ -1,4 +1,4 @@
-// Fantasy Command - Vanilla JS rebuild
+// Fantasy Command - Vanilla JS rebuild (framework-free)
 // Data model
 const players = [
   {
@@ -120,6 +120,8 @@ const state = {
   filter: 'all'
 };
 
+const BASE_WIDTH = 900;
+
 // Helpers
 const byMetric = metric => [...players].sort((a, b) => b[metric] - a[metric]);
 const getTop = metric => byMetric(metric)[0];
@@ -202,33 +204,26 @@ function renderTable() {
   const rows = [...players]
     .sort((a, b) => b.totalPoints - a.totalPoints)
     .map((p, i) => {
-      const posClass =
-        p.position === 'WR' ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' :
-        p.position === 'RB' ? 'bg-green-500/10 text-green-400 border-green-500/20' :
-        p.position === 'QB' ? 'bg-pink-500/10 text-pink-400 border-pink-500/20' :
-        'bg-orange-500/10 text-orange-400 border-orange-500/20';
-
+      const posClass = `pos-pill ${p.position}`;
       const trendIcon = trendSvg(p.trend);
 
       return `
-        <tr class="group hover:bg-white/5 transition-colors">
-          <td class="px-6 py-4 text-slate-500 font-mono">#${i + 1}</td>
-          <td class="px-6 py-4">
-            <div class="flex items-center gap-3">
-              <img src="${p.avatarUrl}" class="w-8 h-8 rounded-full bg-slate-800 object-cover" alt="">
-              <div>
-                <div class="font-medium text-white group-hover:text-cyan-400 transition-colors">${p.name}</div>
-                <div class="text-xs text-slate-500">${p.team}</div>
+        <tr>
+          <td class="rank">#${i + 1}</td>
+          <td>
+            <div class="cell-player">
+              <img src="${p.avatarUrl}" class="avatar-sm" alt="">
+              <div class="player-meta">
+                <div class="player-name">${p.name}</div>
+                <div class="player-team">${p.team}</div>
               </div>
             </div>
           </td>
-          <td class="px-6 py-4 text-center">
-            <span class="px-2 py-1 rounded text-[10px] font-bold border border-white/10 ${posClass}">${p.position}</span>
-          </td>
-          <td class="px-6 py-4 text-right font-bold text-white">${p.totalPoints.toFixed(1)}</td>
-          <td class="px-6 py-4 text-right text-slate-300">${p.ppg.toFixed(1)}</td>
-          <td class="px-6 py-4 text-right text-slate-300">${p.ceiling}</td>
-          <td class="px-6 py-4 text-center">${trendIcon}</td>
+          <td class="pos-cell"><span class="${posClass}">${p.position}</span></td>
+          <td class="num strong">${p.totalPoints.toFixed(1)}</td>
+          <td class="num">${p.ppg.toFixed(1)}</td>
+          <td class="num">${p.ceiling}</td>
+          <td class="trend-cell">${trendIcon}</td>
         </tr>
       `;
     })
@@ -258,17 +253,14 @@ function wireEvents() {
   window.addEventListener('resize', debounce(() => {
     renderRadar();
     renderBar();
+    applyScale();
   }, 200));
 }
 
 function updateFilterButtons() {
   document.querySelectorAll('#filter-buttons button').forEach(btn => {
     const active = btn.dataset.filter === state.filter;
-    btn.classList.toggle('bg-white/10', active);
-    btn.classList.toggle('text-white', active);
-    btn.classList.toggle('border', active);
-    btn.classList.toggle('border-white/5', active);
-    btn.classList.toggle('text-slate-500', !active);
+    btn.classList.toggle('active', active);
   });
 }
 
@@ -293,12 +285,12 @@ function debounce(fn, delay = 150) {
 
 function trendSvg(trend) {
   if (trend === 'up') {
-    return '<span class="text-green-400 flex justify-center"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg></span>';
+    return '<span class="trend up">▲</span>';
   }
   if (trend === 'down') {
-    return '<span class="text-red-400 flex justify-center"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"></path></svg></span>';
+    return '<span class="trend down">▼</span>';
   }
-  return '<span class="text-slate-500 flex justify-center"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14"></path></svg></span>';
+  return '<span class="trend stable">—</span>';
 }
 
 // D3 radar
@@ -309,7 +301,7 @@ function drawRadarChart(containerId, data) {
 
   const rect = container.getBoundingClientRect();
   const width = rect.width || 360;
-  const height = rect.height || 360;
+  const height = rect.height || width; // keep square when height not explicitly set
 
   const svg = d3.select(container)
     .append('svg')
@@ -391,7 +383,7 @@ function drawBarChart(containerId, data) {
 
   const rect = container.getBoundingClientRect();
   const width = rect.width || 640;
-  const height = rect.height || 360;
+  const height = rect.height || Math.round(width * 0.62);
 
   const margin = { top: 40, right: 15, bottom: 40, left: 15 };
   const innerWidth = width - margin.left - margin.right;
@@ -554,4 +546,13 @@ function init() {
   wireEvents();
 }
 
-document.addEventListener('DOMContentLoaded', init);
+function applyScale() {
+  const minScale = 0.55;
+  const scale = Math.max(minScale, Math.min(1, window.innerWidth / BASE_WIDTH));
+  document.documentElement.style.setProperty('--scale', scale);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  applyScale();
+  init();
+});
