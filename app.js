@@ -407,7 +407,7 @@ function drawBarChart(containerId, data) {
   const strokeMain = Math.max(1, width * 0.008);
   const strokeGlow = Math.max(2, width * 0.015);
   const fontSizeVal = Math.max(8, width * 0.025);
-  const fontSizeAxis = isMobile ? 9 : Math.max(8, width * 0.015);
+  const fontSizeAxis = isMobile ? 5 : Math.max(8, width * 0.015);
 
   barGroups.append('rect')
     .attr('x', d => x(d.label))
@@ -498,12 +498,13 @@ function drawScatterChart(containerId, data) {
   const rect = container.getBoundingClientRect();
   const width = rect.width || 640;
   const height = rect.height || 360;
+  const isMobile = window.innerWidth < 768;
 
   const margin = { 
-    top: height * 0.1, 
+    top: isMobile ? 10 : height * 0.02, // Very small top margin
     right: width * 0.05, 
-    bottom: height * 0.1, 
-    left: width * 0.08 
+    bottom: isMobile ? 40 : height * 0.1, // Fixed bottom for mobile
+    left: isMobile ? 40 : width * 0.08 // Fixed left for mobile (reduced from previous calculation)
   };
   const innerWidth = width - margin.left - margin.right;
   const innerHeight = height - margin.top - margin.bottom;
@@ -551,10 +552,10 @@ function drawScatterChart(containerId, data) {
   // Axis Labels
   g.append('text')
     .attr('x', innerWidth / 2)
-    .attr('y', innerHeight + margin.bottom - 5)
+    .attr('y', innerHeight + (isMobile ? 35 : margin.bottom - 5)) // Fixed offset for mobile
     .attr('text-anchor', 'middle')
     .attr('fill', '#94a3b8')
-    .attr('font-size', '12px')
+    .attr('font-size', isMobile ? '8px' : '16px') // Bigger on desktop
     .attr('font-weight', 'bold')
     .attr('letter-spacing', '0.1em')
     .text('CONSISTENCY');
@@ -562,10 +563,10 @@ function drawScatterChart(containerId, data) {
   g.append('text')
     .attr('transform', 'rotate(-90)')
     .attr('x', -innerHeight / 2)
-    .attr('y', -margin.left + 15)
+    .attr('y', isMobile ? -30 : -margin.left + 15) // Fixed offset for mobile (closer to axis)
     .attr('text-anchor', 'middle')
     .attr('fill', '#94a3b8')
-    .attr('font-size', '12px')
+    .attr('font-size', isMobile ? '8px' : '16px') // Bigger on desktop
     .attr('font-weight', 'bold')
     .attr('letter-spacing', '0.1em')
     .text('CEILING');

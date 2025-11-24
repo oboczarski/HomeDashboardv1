@@ -467,7 +467,7 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 0.5em;
-  font-size: 0.625em;
+  font-size: 0.9em; /* Increased from 0.625em */
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--text-muted);
@@ -612,13 +612,13 @@
 
 /* Scatter Plot Specifics */
 .fc-scatter-panel {
-  min-height: 60em; /* Increased height significantly */
+  min-height: 45em; /* Reduced for desktop */
 }
 
 .fc-legend-inline {
   display: flex;
   gap: 1em;
-  font-size: 0.625em;
+  font-size: 1.2em; /* Increased from 1em */
   font-weight: 700;
   color: var(--text-secondary);
   text-transform: uppercase;
@@ -674,9 +674,14 @@
 .fc-legend-abbr { display: none; } /* Default hidden */
 
 @media (max-width: 768px) {
+  /* Scatter Panel: Tall on mobile */
+  .fc-scatter-panel {
+    min-height: 60em;
+  }
+
   /* Radar Legend: Bigger & Abbreviated */
   .fc-legend {
-    font-size: 0.85em; /* Bigger on mobile */
+    font-size: 1.3em; /* Even bigger on mobile */
     gap: 0.75em;
   }
   .fc-legend-full { display: none; }
@@ -684,16 +689,16 @@
 
   /* Scatter Legend: Bigger */
   .fc-legend-inline {
-    font-size: 0.85em; /* Bigger on mobile */
+    font-size: 1.4em; /* Even bigger on mobile */
   }
 
   /* Scatter Data Labels: Smaller */
   .scatter-label {
-    font-size: 8px !important; /* Force smaller on mobile */
+    font-size: 6px !important; /* Force smaller on mobile */
   }
 
   /* Scatter Axis Labels: Smaller */
   .scatter-axis-label {
-    font-size: 10px !important; /* Force smaller on mobile */
+    font-size: 8px !important; /* Force smaller on mobile */
   }
 }
