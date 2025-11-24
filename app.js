@@ -543,11 +543,15 @@ function drawScatterChart(containerId, data) {
   g.append('g')
     .attr('class', 'scatter-axis')
     .attr('transform', `translate(0,${innerHeight})`)
-    .call(d3.axisBottom(x).ticks(5));
+    .call(d3.axisBottom(x).ticks(5))
+    .selectAll('text')
+    .style('font-size', isMobile ? '8px' : '14px');
 
   g.append('g')
     .attr('class', 'scatter-axis')
-    .call(d3.axisLeft(y).ticks(5));
+    .call(d3.axisLeft(y).ticks(5))
+    .selectAll('text')
+    .style('font-size', isMobile ? '8px' : '14px');
 
   // Axis Labels
   g.append('text')
@@ -563,7 +567,7 @@ function drawScatterChart(containerId, data) {
   g.append('text')
     .attr('transform', 'rotate(-90)')
     .attr('x', -innerHeight / 2)
-    .attr('y', isMobile ? -30 : -margin.left + 15) // Fixed offset for mobile (closer to axis)
+    .attr('y', isMobile ? -30 : -margin.left + 40) // Fixed offset for mobile (closer to axis), adjusted desktop
     .attr('text-anchor', 'middle')
     .attr('fill', '#94a3b8')
     .attr('font-size', isMobile ? '8px' : '16px') // Bigger on desktop
