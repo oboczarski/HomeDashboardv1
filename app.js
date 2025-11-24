@@ -46,15 +46,23 @@ function calculatePlayerScore(player) {
 }
 
 function radarData(player) {
+  // Mock data generation for missing metrics based on player quality
+  const seed = player.ppg + player.consistency;
+  const rec = Math.min(100, (player.ppg * 3.5)); 
+  const recYpg = Math.min(100, (player.ppg * 4));
+  const yprr = Math.min(100, (player.consistency * 0.9));
+  const firstDrr = Math.min(100, (player.ceiling * 1.5));
+  const impG = Math.min(100, (player.ppg * 3 + 10));
+
   return [
-    { axis: 'Consistency', value: player.consistency },
-    { axis: 'Ceiling', value: Math.min(100, (player.ceiling / 60) * 100) },
-    { axis: 'Floor', value: Math.min(100, (player.floor / 20) * 100) },
+    { axis: 'FPTS', value: Math.min(100, (player.totalPoints / 400) * 100) },
     { axis: 'PPG', value: Math.min(100, (player.ppg / 30) * 100) },
-    { axis: 'Share', value: Math.min(100, (player.targetShare / 40) * 100) },
-    { axis: 'Red Zone', value: Math.min(100, player.redZone ?? 0) },
-    { axis: 'Burst', value: Math.min(100, player.burst ?? 0) },
-    { axis: 'Clutch', value: Math.min(100, player.clutch ?? 0) }
+    { axis: 'REC', value: rec },
+    { axis: 'recYPG', value: recYpg },
+    { axis: 'TS %', value: Math.min(100, (player.targetShare / 40) * 100) },
+    { axis: 'YPRR', value: yprr },
+    { axis: '1DRR', value: firstDrr },
+    { axis: 'IMP/G', value: impG }
   ];
 }
 
@@ -69,8 +77,10 @@ function ppgBarData(filter) {
 // Rendering functions
 function renderSummary() {
   const topPoints = getTop('totalPoints');
-  const topConsistency = getTop('consistency');
-  const topCeiling = getTop('ceiling');
+  const topConsistencyRB = [...players]
+    .filter(p => p.position === 'RB')
+    .sort((a, b) => b.consistency - a.consistency)[0] || getTop('consistency');
+  const topPPG = getTop('ppg');
   const topShare = getTop('targetShare');
 
   const projectedMaxPoints = 450; // visual scale only
@@ -79,16 +89,15 @@ function renderSummary() {
   setText('total-points-name', topPoints.name);
   setWidth('total-points-bar', (topPoints.totalPoints / projectedMaxPoints) * 100);
 
-  setText('consistency-value', `${topConsistency.consistency}%`);
-  setText('consistency-name', topConsistency.name);
-  setWidth('consistency-bar', topConsistency.consistency);
+  setText('consistency-value', `${topConsistencyRB.consistency}%`);
+  setText('consistency-name', topConsistencyRB.name);
+  setWidth('consistency-bar', topConsistencyRB.consistency);
 
-  setText('ceiling-value', topCeiling.ceiling);
-  setText('ceiling-name', topCeiling.name);
+  setText('ppg-value', topPPG.ppg.toFixed(1));
+  setText('ppg-name', topPPG.name);
 
   setText('share-value', `${topShare.targetShare}%`);
   setText('share-name', topShare.name);
-  setWidth('share-bar', topShare.targetShare);
 }
 
 function renderSelect() {

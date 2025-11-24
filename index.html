@@ -25,15 +25,15 @@
     <main class="fc-main">
       <!-- Key Metrics Row -->
       <div class="fc-grid-metrics">
-        <!-- Total Points -->
+        <!-- Total PPR FPTS -->
         <div class="fc-summary-card fc-card fc-glass fc-card--hover fc-card--cyan">
           <div class="fc-card__glow"></div>
           <div class="fc-card__header">
             <div>
-              <p class="fc-card__subtitle">League Leader</p>
-              <h3 class="fc-card__title">Total Points</h3>
+              <p class="fc-card__subtitle">Production</p>
+              <h3 class="fc-card__title">Total PPR FPTS</h3>
             </div>
-            <div class="fc-badge fc-badge--cyan">Week 14</div>
+            <div class="fc-badge fc-badge--cyan">Output</div>
           </div>
           <div class="fc-metric-row">
             <div id="total-points-value" class="fc-metric-value fc-text-glow">0</div>
@@ -47,15 +47,34 @@
           </div>
         </div>
 
-        <!-- Consistency -->
+        <!-- PPR PPG -->
+        <div class="fc-summary-card fc-card fc-glass fc-card--hover fc-card--pink">
+          <div class="fc-card__glow"></div>
+          <div class="fc-card__header">
+            <div>
+              <p class="fc-card__subtitle">Efficiency</p>
+              <h3 class="fc-card__title">PPR PPG</h3>
+            </div>
+            <div class="fc-badge fc-badge--pink">Dominance</div>
+          </div>
+          <div class="fc-metric-row">
+            <div id="ppg-value" class="fc-metric-value fc-text-glow">0</div>
+            <div class="fc-metric-sub fc-text-pink">pts</div>
+          </div>
+          <div class="fc-card__footer">
+            Held by <span id="ppg-name" class="fc-text-pink-light">Player</span>
+          </div>
+        </div>
+
+        <!-- Consistency Rate(RB) -->
         <div class="fc-summary-card fc-card fc-glass fc-card--hover fc-card--purple">
           <div class="fc-card__glow"></div>
           <div class="fc-card__header">
             <div>
-              <p class="fc-card__subtitle">Reliability</p>
-              <h3 class="fc-card__title">Consistency</h3>
+              <p class="fc-card__subtitle">RELIABILITY</p>
+              <h3 class="fc-card__title">Consistency Rate(RB)</h3>
             </div>
-            <div class="fc-badge fc-badge--purple">R2 = 0.95</div>
+            <div class="fc-badge fc-badge--purple">Floor</div>
           </div>
           <div class="fc-metric-row">
             <div id="consistency-value" class="fc-metric-value fc-text-glow">0%</div>
@@ -68,32 +87,13 @@
           </div>
         </div>
 
-        <!-- Ceiling -->
-        <div class="fc-summary-card fc-card fc-glass fc-card--hover fc-card--pink">
-          <div class="fc-card__glow"></div>
-          <div class="fc-card__header">
-            <div>
-              <p class="fc-card__subtitle">Explosiveness</p>
-              <h3 class="fc-card__title">Max Ceiling</h3>
-            </div>
-            <div class="fc-badge fc-badge--pink">Upside</div>
-          </div>
-          <div class="fc-metric-row">
-            <div id="ceiling-value" class="fc-metric-value fc-text-glow">0</div>
-            <div class="fc-metric-sub fc-text-pink">pts</div>
-          </div>
-          <div class="fc-card__footer">
-            Held by <span id="ceiling-name" class="fc-text-pink-light">Player</span>
-          </div>
-        </div>
-
         <!-- Target Share -->
         <div class="fc-summary-card fc-card fc-glass fc-card--hover fc-card--emerald">
           <div class="fc-card__glow"></div>
           <div class="fc-card__header">
             <div>
-              <p class="fc-card__subtitle">Usage</p>
-              <h3 class="fc-card__title">Dominator</h3>
+              <p class="fc-card__subtitle">USAGE</p>
+              <h3 class="fc-card__title">Target Share</h3>
             </div>
             <div class="fc-badge fc-badge--emerald">Volume</div>
           </div>
@@ -113,8 +113,8 @@
         <div class="fc-card fc-glass fc-chart-panel fc-radar-panel">
           <div class="fc-chart-header">
             <div>
-              <h3 class="fc-card__title">Metric Rings</h3>
-              <p class="fc-card__subtitle-text">Multi-variant performance index</p>
+              <h3 class="fc-card__title">Performance Map</h3>
+              <p class="fc-card__subtitle-text">Multi-Stat Performance Profile(Top 50)</p>
             </div>
             <select id="player-select" class="fc-select"></select>
           </div>
@@ -129,14 +129,14 @@
           </div>
 
           <div class="fc-legend">
-            <div class="fc-legend-item"><span class="fc-dot fc-bg-red"></span><span class="fc-legend-full">CSTY</span><span class="fc-legend-abbr">CSTY</span></div>
-            <div class="fc-legend-item"><span class="fc-dot fc-bg-orange"></span><span class="fc-legend-full">CL</span><span class="fc-legend-abbr">CL</span></div>
-            <div class="fc-legend-item"><span class="fc-dot fc-bg-yellow"></span><span class="fc-legend-full">FLR</span><span class="fc-legend-abbr">FLR</span></div>
-            <div class="fc-legend-item"><span class="fc-dot fc-bg-cyan"></span><span class="fc-legend-full">PPG</span><span class="fc-legend-abbr">PPG</span></div>
-            <div class="fc-legend-item"><span class="fc-dot fc-bg-violet"></span><span class="fc-legend-full">SHR</span><span class="fc-legend-abbr">SHR</span></div>
-            <div class="fc-legend-item"><span class="fc-dot fc-bg-emerald"></span><span class="fc-legend-full">RZ</span><span class="fc-legend-abbr">RZ</span></div>
-            <div class="fc-legend-item"><span class="fc-dot fc-bg-pink"></span><span class="fc-legend-full">BRST</span><span class="fc-legend-abbr">BRST</span></div>
-            <div class="fc-legend-item"><span class="fc-dot fc-bg-purple"></span><span class="fc-legend-full">CLTCH</span><span class="fc-legend-abbr">CLTCH</span></div>
+            <div class="fc-legend-item"><span class="fc-dot fc-bg-red"></span><span class="fc-legend-full">FPTS</span><span class="fc-legend-abbr">FPTS</span></div>
+            <div class="fc-legend-item"><span class="fc-dot fc-bg-orange"></span><span class="fc-legend-full">PPG</span><span class="fc-legend-abbr">PPG</span></div>
+            <div class="fc-legend-item"><span class="fc-dot fc-bg-yellow"></span><span class="fc-legend-full">REC</span><span class="fc-legend-abbr">REC</span></div>
+            <div class="fc-legend-item"><span class="fc-dot fc-bg-cyan"></span><span class="fc-legend-full">recYPG</span><span class="fc-legend-abbr">rYPG</span></div>
+            <div class="fc-legend-item"><span class="fc-dot fc-bg-violet"></span><span class="fc-legend-full">TS %</span><span class="fc-legend-abbr">TS%</span></div>
+            <div class="fc-legend-item"><span class="fc-dot fc-bg-emerald"></span><span class="fc-legend-full">YPRR</span><span class="fc-legend-abbr">YPRR</span></div>
+            <div class="fc-legend-item"><span class="fc-dot fc-bg-pink"></span><span class="fc-legend-full">1DRR</span><span class="fc-legend-abbr">1DRR</span></div>
+            <div class="fc-legend-item"><span class="fc-dot fc-bg-purple"></span><span class="fc-legend-full">IMP/G</span><span class="fc-legend-abbr">IMP</span></div>
           </div>
         </div>
 
@@ -145,7 +145,7 @@
           <div class="fc-chart-header">
             <div>
               <h3 class="fc-card__title">Efficiency Spectrum</h3>
-              <p class="fc-card__subtitle-text">Points Per Game distribution across top tier assets.</p>
+              <p class="fc-card__subtitle-text">Points Per Game distribution across the top 10 at each position</p>
             </div>
             <div class="fc-filter-group" id="filter-buttons">
               <button data-filter="all" class="fc-filter-btn fc-filter-btn--active">All</button>
@@ -165,8 +165,8 @@
       <div class="fc-card fc-glass fc-chart-panel fc-scatter-panel">
         <div class="fc-chart-header">
           <div>
-            <h3 class="fc-card__title">Performance Matrix</h3>
-            <p class="fc-card__subtitle-text">Scoring Leaders Consistency vs. Ceiling Analysis</p>
+            <h3 class="fc-card__title">Consistency / Ceiling Index</h3>
+            <p class="fc-card__subtitle-text">PPR Top 24 • Consistency vs. Ceiling Analysis</p>
           </div>
           <div class="fc-legend-inline">
             <div class="fc-legend-item"><span class="fc-dot fc-pos-qb-dot"></span>QB</div>
