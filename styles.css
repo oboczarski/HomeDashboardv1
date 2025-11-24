@@ -1,4 +1,5 @@
-:root {
+/* Scoped Dashboard Styles */
+.fc-dashboard {
   /* Colors */
   --bg-deep: #0f172a;
   --bg-gradient-start: #020617;
@@ -37,79 +38,69 @@
   --glass-blur: 16px;
 
   /* Spacing & Sizing */
-  --radius-lg: 1.5rem;
-  --radius-md: 0.75rem;
-  --radius-sm: 0.5rem;
+  --radius-lg: 1.5em;
+  --radius-md: 0.75em;
+  --radius-sm: 0.5em;
   --radius-full: 9999px;
   
   --font-family: 'Outfit', system-ui, -apple-system, sans-serif;
-}
 
-/* Reset & Base */
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  font-size: 16px; /* Base size for rems */
-}
-
-body {
+  /* Base Styles for Dashboard Context */
   font-family: var(--font-family);
   background-color: var(--bg-deep);
   color: var(--text-primary);
   line-height: 1.5;
-  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
-}
-
-/* Proportional Scaling for Mobile - "Zoom Out" Strategy */
-html {
-  font-size: 16px; /* Default base */
-}
-
-/* 
-   Aggressive scaling to maintain desktop layout on all screens.
-   We scale the root font-size based on viewport width (vw).
-   At 1400px width, 1.15vw is approx 16px.
-   At 375px width, 1.15vw is approx 4.3px.
-   This ensures 1rem always represents the same % of the screen width.
-*/
-@media (max-width: 1400px) {
-  html {
-    font-size: 1.15vw;
-  }
-}
-
-/* Layout Containers */
-.fc-dashboard {
+  
+  /* Layout */
   min-height: 100vh;
   width: 100%;
   background: linear-gradient(to bottom right, var(--bg-gradient-start), var(--bg-gradient-mid), var(--bg-gradient-end));
   position: relative;
   overflow: hidden;
+
+  /* Default Font Size (Desktop) */
+  font-size: 16px;
+}
+
+/* Reset & Base within Dashboard */
+.fc-dashboard *, .fc-dashboard *::before, .fc-dashboard *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* 
+   Aggressive scaling to maintain desktop layout on all screens.
+   We scale the dashboard's font-size based on viewport width (vw).
+   At 1400px width, 1.15vw is approx 16px.
+   At 375px width, 1.15vw is approx 4.3px.
+   This ensures 1em always represents the same % of the screen width.
+*/
+@media (max-width: 1400px) {
+  .fc-dashboard {
+    font-size: 1.15vw;
+  }
 }
 
 .fc-main {
   position: relative;
   z-index: 10;
-  padding: 1.5rem;
-  max-width: 1600px;
+  padding: 1.5em;
+  max-width: 100em; /* 1600px / 16 */
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.5em;
 }
 
 /* Background Blobs */
 .fc-blob {
   position: absolute;
-  width: 500px;
-  height: 500px;
+  width: 31.25em; /* 500px */
+  height: 31.25em;
   border-radius: 50%;
-  filter: blur(120px);
+  filter: blur(7.5em); /* 120px */
   opacity: 0.2;
   animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
@@ -136,34 +127,34 @@ html {
 .fc-header {
   position: relative;
   z-index: 10;
-  padding: 1.5rem;
+  padding: 1.5em;
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   background: rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(0.75em);
 }
 
 .fc-header__brand {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.75em;
 }
 
 .fc-logo-box {
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 0.75rem;
+  width: 2.5em;
+  height: 2.5em;
+  border-radius: 0.75em;
   background: linear-gradient(to top right, var(--color-cyan), #2563eb);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 10px 15px -3px rgba(6, 182, 212, 0.3);
+  box-shadow: 0 0.625em 0.9375em -0.1875em rgba(6, 182, 212, 0.3);
 }
 
 .fc-title {
-  font-size: 1.5rem;
+  font-size: 1.5em;
   font-weight: 700;
   letter-spacing: -0.025em;
   background: linear-gradient(to right, #fff, #94a3b8);
@@ -175,14 +166,14 @@ html {
 .fc-header__controls {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 1em;
 }
 
 .fc-live-badge {
   display: none;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.375rem 1rem;
+  gap: 0.5em;
+  padding: 0.375em 1em;
   border-radius: var(--radius-full);
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -192,21 +183,21 @@ html {
 }
 
 .fc-dot-pulse {
-  width: 0.5rem;
-  height: 0.5rem;
+  width: 0.5em;
+  height: 0.5em;
   border-radius: 50%;
   background-color: #4ade80;
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 .fc-live-text {
-  font-size: 0.75rem;
+  font-size: 0.75em;
   font-weight: 500;
   color: var(--text-secondary);
 }
 
 .fc-btn-icon {
-  padding: 0.5rem;
+  padding: 0.5em;
   border-radius: var(--radius-full);
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -219,8 +210,8 @@ html {
 }
 
 .fc-avatar-sm {
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.5em;
+  height: 2.5em;
   border-radius: 50%;
   border: 2px solid rgba(255, 255, 255, 0.1);
   cursor: pointer;
@@ -231,28 +222,28 @@ html {
 }
 
 /* Icons */
-.fc-icon { width: 1.5rem; height: 1.5rem; color: white; }
-.fc-icon-sm { width: 1.25rem; height: 1.25rem; }
-.fc-icon-xs { width: 0.75rem; height: 0.75rem; }
+.fc-icon { width: 1.5em; height: 1.5em; color: white; }
+.fc-icon-sm { width: 1.25em; height: 1.25em; }
+.fc-icon-xs { width: 0.75em; height: 0.75em; }
 
 /* Grid Systems */
 .fc-grid-metrics {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 1.5rem;
+  gap: 1.5em;
 }
 
 .fc-grid-charts {
   display: grid;
   grid-template-columns: 1fr 2fr;
-  gap: 1.5rem;
+  gap: 1.5em;
 }
 
 /* Cards & Glassmorphism */
 .fc-card {
   position: relative;
   border-radius: var(--radius-lg);
-  padding: 1.25rem;
+  padding: 1.25em;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -270,18 +261,18 @@ html {
 .fc-card--hover:hover {
   background: rgba(255, 255, 255, 0.07);
   border-color: rgba(255, 255, 255, 0.15);
-  box-shadow: 0 0 15px rgba(56, 189, 248, 0.12);
+  box-shadow: 0 0 0.9375em rgba(56, 189, 248, 0.12);
 }
 
 /* Card Glow Effects */
 .fc-card__glow {
   position: absolute;
-  top: -1.5rem;
-  right: -1.5rem;
-  width: 6rem;
-  height: 6rem;
+  top: -1.5em;
+  right: -1.5em;
+  width: 6em;
+  height: 6em;
   border-radius: 50%;
-  filter: blur(40px);
+  filter: blur(2.5em);
   opacity: 0.2;
   transition: opacity 0.3s;
 }
@@ -297,11 +288,11 @@ html {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 1rem;
+  margin-bottom: 1em;
 }
 
 .fc-card__subtitle {
-  font-size: 0.75rem;
+  font-size: 0.75em;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -309,16 +300,16 @@ html {
 }
 
 .fc-card__title {
-  font-size: 1.125rem;
+  font-size: 1.125em;
   font-weight: 700;
   color: white;
-  margin-top: 0.25rem;
+  margin-top: 0.25em;
 }
 
 .fc-badge {
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.5rem;
-  font-size: 0.75rem;
+  padding: 0.25em 0.5em;
+  border-radius: 0.5em;
+  font-size: 0.75em;
   font-weight: 700;
   border: 1px solid transparent;
 }
@@ -330,23 +321,23 @@ html {
 .fc-metric-row {
   display: flex;
   align-items: flex-end;
-  gap: 1rem;
+  gap: 1em;
 }
 
 .fc-metric-value {
-  font-size: 2.25rem;
+  font-size: 2.25em;
   font-weight: 700;
   color: white;
   line-height: 1;
 }
 
 .fc-text-glow {
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  text-shadow: 0 0 0.625em rgba(255, 255, 255, 0.3);
 }
 
 .fc-metric-sub {
-  margin-bottom: 0.25rem;
-  font-size: 0.875rem;
+  margin-bottom: 0.25em;
+  font-size: 0.875em;
   display: flex;
   align-items: center;
 }
@@ -360,10 +351,10 @@ html {
 
 .fc-progress-bg {
   width: 100%;
-  height: 0.375rem;
+  height: 0.375em;
   background: rgba(255, 255, 255, 0.05);
   border-radius: var(--radius-full);
-  margin-top: 1rem;
+  margin-top: 1em;
   overflow: hidden;
 }
 
@@ -376,14 +367,14 @@ html {
 .fc-bg-purple { background-color: var(--color-purple); }
 
 .fc-card__footer {
-  margin-top: 1rem;
-  font-size: 0.875rem;
+  margin-top: 1em;
+  font-size: 0.875em;
   color: var(--text-secondary);
 }
 
 /* Charts */
 .fc-chart-panel {
-  min-height: 31.25rem; /* was 500px */
+  min-height: 31.25em; /* 500px */
   display: flex;
   flex-direction: column;
 }
@@ -392,13 +383,13 @@ html {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.5em;
   flex-shrink: 0;
   z-index: 20;
 }
 
 .fc-card__subtitle-text {
-  font-size: 0.75rem;
+  font-size: 0.75em;
   color: var(--text-secondary);
 }
 
@@ -406,9 +397,9 @@ html {
   background: rgba(0, 0, 0, 0.4);
   color: var(--text-secondary);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 0.5rem;
-  padding: 0.25rem 0.5rem;
-  font-size: 0.75rem;
+  border-radius: 0.5em;
+  padding: 0.25em 0.5em;
+  font-size: 0.75em;
   outline: none;
   cursor: pointer;
 }
@@ -417,7 +408,7 @@ html {
 .fc-chart-container {
   flex: 1;
   width: 100%;
-  min-height: 21.875rem; /* was 350px */
+  min-height: 21.875em; /* 350px */
   position: relative;
 }
 
@@ -446,12 +437,12 @@ html {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0rem;
+  gap: 0em;
   pointer-events: none;
 }
 
 .fc-radar-label {
-  font-size: 0.6rem;
+  font-size: 0.6em;
   font-weight: 700;
   color: var(--text-secondary);
   text-transform: uppercase;
@@ -459,24 +450,24 @@ html {
 }
 
 .fc-radar-score {
-  font-size: 2.5rem; /* Reduced from 6xl for better fit */
+  font-size: 2.5em;
   font-weight: 900;
   color: white;
   line-height: 1;
-  filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.2));
+  filter: drop-shadow(0 0 0.9375em rgba(255, 255, 255, 0.2));
 }
 
 .fc-radar-meta {
-  font-size: 0.625rem;
+  font-size: 0.625em;
   color: var(--text-muted);
 }
 
 .fc-legend {
-  margin-top: 1rem;
+  margin-top: 1em;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 0.5rem;
-  font-size: 0.625rem;
+  gap: 0.5em;
+  font-size: 0.625em;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--text-muted);
@@ -490,10 +481,10 @@ html {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.25rem;
+  gap: 0.25em;
 }
 
-.fc-dot { width: 0.5rem; height: 0.5rem; border-radius: 50%; }
+.fc-dot { width: 0.5em; height: 0.5em; border-radius: 50%; }
 .fc-bg-red { background-color: var(--color-red); }
 .fc-bg-orange { background-color: var(--color-orange); }
 .fc-bg-yellow { background-color: var(--color-yellow); }
@@ -502,13 +493,13 @@ html {
 /* Bar Chart Filters */
 .fc-filter-group {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.5em;
 }
 
 .fc-filter-btn {
-  padding: 0.25rem 0.75rem;
-  border-radius: 0.5rem;
-  font-size: 0.75rem;
+  padding: 0.25em 0.75em;
+  border-radius: 0.5em;
+  font-size: 0.75em;
   background: transparent;
   color: var(--text-muted);
   border: 1px solid transparent;
@@ -530,7 +521,7 @@ html {
 }
 
 .fc-table-header {
-  padding: 1.5rem;
+  padding: 1.5em;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   display: flex;
   justify-content: space-between;
@@ -539,7 +530,7 @@ html {
 }
 
 .fc-link-btn {
-  font-size: 0.75rem;
+  font-size: 0.75em;
   color: var(--color-cyan-light);
   background: none;
   border: none;
@@ -559,8 +550,8 @@ html {
 }
 
 .fc-th {
-  padding: 1rem 1.5rem;
-  font-size: 0.75rem;
+  padding: 1em 1.5em;
+  font-size: 0.75em;
   color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -577,24 +568,24 @@ html {
 .fc-tr:hover { background-color: rgba(255, 255, 255, 0.05); }
 
 .fc-td {
-  padding: 1rem 1.5rem;
+  padding: 1em 1.5em;
   color: var(--text-secondary);
-  font-size: 0.875rem;
+  font-size: 0.875em;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .fc-td-rank { font-family: monospace; color: var(--text-muted); }
-.fc-td-player { display: flex; align-items: center; gap: 0.75rem; }
+.fc-td-player { display: flex; align-items: center; gap: 0.75em; }
 .fc-player-name { font-weight: 500; color: white; transition: color 0.2s; }
 .fc-tr:hover .fc-player-name { color: var(--color-cyan-light); }
-.fc-player-team { font-size: 0.75rem; color: var(--text-muted); }
+.fc-player-team { font-size: 0.75em; color: var(--text-muted); }
 .fc-td-val { font-weight: 700; color: white; }
 .fc-td-sub { color: #cbd5e1; }
 
 .fc-pos-badge {
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.25rem;
-  font-size: 0.625rem;
+  padding: 0.25em 0.5em;
+  border-radius: 0.25em;
+  font-size: 0.625em;
   font-weight: 700;
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -604,15 +595,15 @@ html {
 .fc-pos-te { background: rgba(249, 115, 22, 0.1); color: #fb923c; border-color: rgba(249, 115, 22, 0.2); }
 
 /* Scrollbar */
-::-webkit-scrollbar { width: 8px; height: 8px; }
-::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); }
-::-webkit-scrollbar-thumb {
+.fc-dashboard ::-webkit-scrollbar { width: 0.5em; height: 0.5em; }
+.fc-dashboard ::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); }
+.fc-dashboard ::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.2);
-  border-radius: 4px;
+  border-radius: 0.25em;
 }
-::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.3); }
+.fc-dashboard ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.3); }
 
-button:focus-visible, select:focus-visible {
+.fc-dashboard button:focus-visible, .fc-dashboard select:focus-visible {
   outline: 2px solid var(--color-cyan-light);
   outline-offset: 2px;
 }
