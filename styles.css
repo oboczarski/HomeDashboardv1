@@ -609,3 +609,54 @@
   outline: 2px solid var(--color-cyan-light);
   outline-offset: 2px;
 }
+
+/* Scatter Plot Specifics */
+.fc-legend-inline {
+  display: flex;
+  gap: 1em;
+  font-size: 0.625em;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.fc-pos-qb-dot { background-color: var(--color-pink-light); box-shadow: 0 0 8px var(--color-pink); }
+.fc-pos-rb-dot { background-color: var(--color-emerald-light); box-shadow: 0 0 8px var(--color-emerald); }
+.fc-pos-wr-dot { background-color: var(--color-cyan-light); box-shadow: 0 0 8px var(--color-cyan); }
+.fc-pos-te-dot { background-color: var(--color-orange); box-shadow: 0 0 8px var(--color-orange); }
+
+/* D3 Scatter Styles */
+.scatter-grid line {
+  stroke: rgba(255, 255, 255, 0.05);
+}
+.scatter-grid path {
+  display: none;
+}
+
+.scatter-axis text {
+  fill: var(--text-muted);
+  font-size: 10px;
+  font-family: var(--font-family);
+}
+.scatter-axis line, .scatter-axis path {
+  stroke: rgba(255, 255, 255, 0.1);
+}
+
+.scatter-label {
+  fill: white;
+  font-size: 10px;
+  font-weight: 500;
+  pointer-events: none;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+}
+
+.scatter-dot {
+  transition: r 0.2s ease;
+  cursor: pointer;
+}
+.scatter-dot:hover {
+  stroke: white;
+  stroke-width: 2px;
+  filter: drop-shadow(0 0 4px white);
+}
