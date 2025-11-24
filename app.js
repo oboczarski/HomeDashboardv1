@@ -12,6 +12,9 @@ const defaultPlayers = [
     ceiling: 45,
     floor: 12,
     targetShare: 29.5,
+    redZone: 92,
+    burst: 85,
+    clutch: 90,
     avatarUrl: 'https://picsum.photos/seed/jefferson/100/100',
     trend: 'up'
   },
@@ -26,6 +29,9 @@ const defaultPlayers = [
     ceiling: 50,
     floor: 15,
     targetShare: 18.2,
+    redZone: 88,
+    burst: 82,
+    clutch: 94,
     avatarUrl: 'https://picsum.photos/seed/cmc/100/100',
     trend: 'stable'
   },
@@ -40,6 +46,9 @@ const defaultPlayers = [
     ceiling: 55,
     floor: 8,
     targetShare: 31.0,
+    redZone: 76,
+    burst: 99,
+    clutch: 86,
     avatarUrl: 'https://picsum.photos/seed/tyreek/100/100',
     trend: 'down'
   },
@@ -54,6 +63,9 @@ const defaultPlayers = [
     ceiling: 42,
     floor: 18,
     targetShare: 0,
+    redZone: 80,
+    burst: 78,
+    clutch: 88,
     avatarUrl: 'https://picsum.photos/seed/allen/100/100',
     trend: 'up'
   },
@@ -68,6 +80,9 @@ const defaultPlayers = [
     ceiling: 30,
     floor: 8,
     targetShare: 22.1,
+    redZone: 90,
+    burst: 70,
+    clutch: 92,
     avatarUrl: 'https://picsum.photos/seed/kelce/100/100',
     trend: 'stable'
   },
@@ -82,6 +97,9 @@ const defaultPlayers = [
     ceiling: 40,
     floor: 10,
     targetShare: 28.4,
+    redZone: 82,
+    burst: 84,
+    clutch: 87,
     avatarUrl: 'https://picsum.photos/seed/lamb/100/100',
     trend: 'up'
   },
@@ -96,6 +114,9 @@ const defaultPlayers = [
     ceiling: 48,
     floor: 14,
     targetShare: 0,
+    redZone: 74,
+    burst: 90,
+    clutch: 85,
     avatarUrl: 'https://picsum.photos/seed/lamar/100/100',
     trend: 'up'
   },
@@ -110,8 +131,45 @@ const defaultPlayers = [
     ceiling: 35,
     floor: 6,
     targetShare: 14.5,
+    redZone: 69,
+    burst: 83,
+    clutch: 80,
     avatarUrl: 'https://picsum.photos/seed/bijan/100/100',
     trend: 'down'
+  },
+  {
+    id: '9',
+    name: 'Amon-Ra St. Brown',
+    position: 'WR',
+    team: 'DET',
+    totalPoints: 298.4,
+    ppg: 19.9,
+    consistency: 88,
+    ceiling: 38,
+    floor: 10,
+    targetShare: 30.2,
+    redZone: 85,
+    burst: 75,
+    clutch: 89,
+    avatarUrl: 'https://picsum.photos/seed/amonra/100/100',
+    trend: 'stable'
+  },
+  {
+    id: '10',
+    name: 'Saquon Barkley',
+    position: 'RB',
+    team: 'NYG',
+    totalPoints: 270.1,
+    ppg: 17.6,
+    consistency: 83,
+    ceiling: 37,
+    floor: 9,
+    targetShare: 16.5,
+    redZone: 78,
+    burst: 88,
+    clutch: 82,
+    avatarUrl: 'https://picsum.photos/seed/saquon/100/100',
+    trend: 'up'
   }
 ];
 
@@ -138,7 +196,10 @@ function radarData(player) {
     { axis: 'Ceiling', value: Math.min(100, (player.ceiling / 60) * 100) },
     { axis: 'Floor', value: Math.min(100, (player.floor / 20) * 100) },
     { axis: 'PPG', value: Math.min(100, (player.ppg / 30) * 100) },
-    { axis: 'Share', value: Math.min(100, (player.targetShare / 40) * 100) }
+    { axis: 'Share', value: Math.min(100, (player.targetShare / 40) * 100) },
+    { axis: 'Red Zone', value: Math.min(100, player.redZone ?? 0) },
+    { axis: 'Burst', value: Math.min(100, player.burst ?? 0) },
+    { axis: 'Clutch', value: Math.min(100, player.clutch ?? 0) }
   ];
 }
 
@@ -146,7 +207,7 @@ function ppgBarData(filter) {
   return [...players]
     .filter(p => filter === 'all' || p.position === filter)
     .sort((a, b) => b.ppg - a.ppg)
-    .slice(0, 8)
+    .slice(0, 10)
     .map(p => ({ label: p.name.split(' ').pop() || p.name, value: p.ppg }));
 }
 
@@ -332,7 +393,7 @@ function drawRadarChart(containerId, data) {
   const innerRadius = size * 0.12; // Proportional inner hole
   const ringWidth = (maxRadius - innerRadius) / numRings;
   const gap = size * 0.01; // Proportional gap
-  const colors = ['#ef4444', '#f97316', '#eab308', '#22d3ee', '#8b5cf6'];
+  const colors = ['#ef4444', '#f97316', '#eab308', '#22d3ee', '#8b5cf6', '#10b981', '#ec4899', '#a855f7'];
   const fontSize = Math.max(8, size * 0.035); // Scale font, min 8px
 
   data.forEach((d, i) => {
@@ -582,4 +643,3 @@ window.initFantasyDashboard = function(data) {
 document.addEventListener('DOMContentLoaded', () => {
   window.initFantasyDashboard();
 });
-

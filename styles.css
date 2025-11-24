@@ -465,7 +465,7 @@
 .fc-legend {
   margin-top: 1em;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 0.5em;
   font-size: 0.625em;
   text-transform: uppercase;
@@ -488,6 +488,8 @@
 .fc-bg-red { background-color: var(--color-red); }
 .fc-bg-orange { background-color: var(--color-orange); }
 .fc-bg-yellow { background-color: var(--color-yellow); }
+.fc-bg-emerald { background-color: var(--color-emerald); }
+.fc-bg-pink { background-color: var(--color-pink); }
 .fc-bg-violet { background-color: var(--color-violet); }
 
 /* Bar Chart Filters */
